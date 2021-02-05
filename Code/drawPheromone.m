@@ -1,0 +1,1 @@
+function [ ] = drawPheromone(tau , graph)
