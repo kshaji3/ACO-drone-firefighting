@@ -19,6 +19,8 @@ tau = zeros(0, droneNo);
 eta = zeros(0, droneNo);
 for i = 1:1:droneNo
 end
-    
+rho = 0.5; % Evaporation rate 
+alpha = 1;  % Phromone exponential parameters 
+beta = 1;  % Desirability exponetial paramter
 %% Main Loop of ACO
 
