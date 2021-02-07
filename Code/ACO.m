@@ -4,10 +4,12 @@ clc
 %% Problem Preparation
 
 %Create the graph
+[ graph ] = createGraph();
 
 %Draw the graph
 figure
 subplot(1, 3, 1)
+
 %% ACO Algorithm
 
 %% Initial Parameters
