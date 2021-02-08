@@ -9,7 +9,7 @@ clc
 %Draw the graph
 figure
 subplot(1, 3, 1)
-
+drawGraph(graph);
 %% ACO Algorithm
 
 %% Initial Parameters
