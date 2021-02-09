@@ -32,13 +32,12 @@ beta = 1;  % Desirability exponetial paramter
 bestFitness = inf;
 bestTour = [];
 colony = zeros(0, droneNo);
-allAntsFitness = zeros(0, droneNo);
 for i = 1: maxIter
     %create ants
     for j = 1: droneNo
         colony(0, droneNo) = createColony() %placeholder
-        for i = 1: antNo %calculate fitnesses
-            colony(0, droneNo).ant(i).fitness = fitnessFunction(); %placeholder
+        for i = 1: antNo
+            colony(0, droneNo).ant(i).fitness = fitness
         end
     end
 end
