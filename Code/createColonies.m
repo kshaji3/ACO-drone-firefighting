@@ -1,1 +1,1 @@
-function [ colony ] = createColonies( graph, colony , antNo, tau, eta, alpha,  beta)
+function [ colony ] = createColonies( graph, colony , droneNo, antNo, tau, eta, alpha,  beta)
