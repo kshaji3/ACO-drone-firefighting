@@ -1,4 +1,5 @@
 function [ graph ] = createGraph()
+    %create the CONSTRUCTION GRAPH
     x = [0 5 10 15 20 25];
     y = [0 5 10 15 20 25];
     graph.n = length(x);

@@ -1,7 +1,7 @@
 function [   ]  = drawGraph( graph )
-% To visualize the nodes and edges of the graph
+% Visualize the NODES and EDGES of the graph
     hold on 
-
+    % # VERTICES = # CITIES
     for i = 1 : graph.n - 1
         for j =  i+1 : graph.n
     
