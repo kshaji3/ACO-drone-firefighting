@@ -19,16 +19,17 @@ drawGraph(graph);
 maxIter = 10;
 antNo = 10;
 droneNo = 5;
-
-tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
-eta = 1 ./ graph.edges; %edge desirability
-
-%Start the process of creating a 3D tau matrix
-tau = tau0 * ones(graph.n, graph.n);
-for i = 1: 1: droneNo - 1
-    tau(:,:,i + 1) = tau0 * ones(graph.n, graph.n);
+tau0 = zeros(1, droneNo);
+eta = zeros(1, droneNo);
+%%
+for i = 1:1:droneNo
+    tau0(1, i) = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
 end
-
+tau = tau0(1, droneNo) * ones(graph.n, graph.n);
+for i = 1: 1: droneNo - 1
+    tau(:,:,i + 1) = tau0(1, droneNo) * ones(graph.n, graph.n);
+end
+testX = tau0(1, droneNo)
 rho = 0.5; % Evaporation rate 
 alpha = 1;  % Pheromone exponential parameters 
 beta = 1;  % Desirability exponetial paramter
