@@ -1,5 +1,4 @@
-function [   ]  = drawGraph( graph )
-% Visualize the NODES and EDGES of the graph
+function [   ]  = drawGraphWithDrones(graph, droneLocX, droneLocY)
     hold on 
     % # VERTICES = # CITIES
     for i = 1 : graph.n - 1
@@ -23,8 +22,13 @@ function [   ]  = drawGraph( graph )
         Y = [graph.node(:).y ];
         plot(X,Y, 'ok', 'MarkerSize', 10, 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor' , [ 1, 0.6 , 0.6]);
     end
-
-    title ('All nodes and edges')
+    
+    for i = 1: length(droneLocX)
+        X = [droneLocX(i)];
+        Y = [droneLocY(i)];
+        plot(X,Y, 'ok', 'MarkerSize', 6, 'MarkerEdgeColor' , 'blue' , 'MarkerFaceColor' , 'blue');
+    end
+    title ('All nodes, edges, and drones')
     box('on')
 
 end

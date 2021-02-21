@@ -3,16 +3,16 @@ close all
 clc
 %% Problem Preparation
 %get the fires and drones
-[ fires ] = createFires();
-[ drones ] = createDrones();
-
+[fireIntensity, fireLocX, fireLocY] = createFires();
+[droneCapac, droneLocX, droneLocY] = createDrones();
 %Create the graph
-[ graph ] = createGraph();
-
+[graph] = createGraph(fireLocX, fireLocY);
 %Draw the graph
 figure
-subplot(1, 3, 1)
+subplot(1, 4, 1)
 drawGraph(graph);
+subplot(1, 4, 2);
+drawGraphWithDrones(graph, droneLocX, droneLocY);
 %% ACO Algorithm
 
 %% Initial Parameters
@@ -33,10 +33,13 @@ rho = 0.5; % Evaporation rate
 alpha = 1;  % Pheromone exponential parameters 
 beta = 1;  % Desirability exponetial paramter
 %% Main Loop of ACO
+
+%initial base conditions
 bestFitness = inf;
 bestTour = [];
 colony = zeros(0, droneNo);
 allAntsFitness = zeros(0, droneNo);
+
 for i = 1: maxIter
     %create ants
     for j = 1: droneNo
