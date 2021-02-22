@@ -43,7 +43,7 @@ allAntsFitness = zeros(0, droneNo);
 for i = 1: maxIter
     %create ants
     for j = 1: droneNo
-        colony(droneNo) = createColonies(graph, colony, droneNo, antNo, tau, eta, alpha, beta) %placeholder
+        colony(droneNo) = createColonies(graph, colony, antNo, tau, eta, alpha, beta) %placeholder
         for i = 1: antNo %calculate fitnesses
             colony(0, droneNo).ant(i).fitness = fitnessFunction(); %placeholder
         end
