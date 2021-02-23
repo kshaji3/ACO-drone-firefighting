@@ -1,4 +1,5 @@
 function [ colony ] = createColonies( graph, colony , antNo, tau, eta, alpha,  beta)
+    nodeNo = graph.n;
     for i = 1 : antNo
     
         initial_node = randi( [1 , nodeNo] ); % select a random node 
