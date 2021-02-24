@@ -1,7 +1,7 @@
 function [nextNode] = rouletteWheel( P )
 %Roulette wheel to choose next edge based on P values
-    consumP = consum(P);
+    cumsumP = cumsum(P);
     r = rand();
     nextNode = find(r <= cumsumP);
-    nextNode = nextNode(i);
+    nextNode = nextNode(1)
 end
