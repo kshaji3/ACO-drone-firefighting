@@ -37,15 +37,16 @@ beta = 1;  % Desirability exponetial paramter
 %initial base conditions
 bestFitness = inf;
 bestTour = [];
-colony = zeros(0, droneNo);
+colony = [];
+%colony = zeros(0, droneNo);
 allAntsFitness = zeros(0, droneNo);
 
 for i = 1: maxIter
     %create ants
     for j = 1: droneNo
-        colony(:, :, j) = createColonies(graph, colony, antNo, tau(:,:,j), eta, alpha, beta) %placeholder
+        colony(j) = createColonies(graph, colony, antNo, tau(:,:,j), eta, alpha, beta) %placeholder
         for i = 1: antNo %calculate fitnesses
-            colony(0, droneNo).ant(i).fitness = fitnessFunction(); %placeholder
+            colony(j).ant(i).fitness = fitnessFunction(); %placeholder
         end
         allAntsFitness = [colony.ant(:).fitness];
         [minVal, minIndex] = min(allAntsFitness);
