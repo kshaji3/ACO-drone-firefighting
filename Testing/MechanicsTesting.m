@@ -1,4 +1,3 @@
-A = {1 2 3; 4 5 6};
-B = {'apple', 'banana', 'banana'; 'cherry', 'cherry', 'apple'};
-S = struct('number', A, 'fruit', B);
-T = S(2, 2) % T.number is 5, T.fruit is 'cherry'
+clear
+colony(1).ant(1).tour(1) = 10;
+colony(2).ant(1).tour(1) = 20;
