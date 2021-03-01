@@ -16,7 +16,7 @@ drawGraphWithDrones(graph, droneLocX, droneLocY);
 %% ACO Algorithm
 
 %% Initial Parameters
-maxIter = 10;
+maxIter = 1;
 antNo = 10;
 droneNo = 5;
 
@@ -44,9 +44,9 @@ for i = 1: maxIter
     %create ants
     for j = 1: droneNo
         
-        colony = createColonies(graph, droneNo, colony, antNo, tau(:,:,j), eta, alpha, beta) %works
+        colony = createColonies(graph, j, colony, antNo, tau(:,:,j), eta, alpha, beta) %works
         for i = 1: antNo %calculate fitnesses
-            colony.ant(i).fitness = fitnessFunction();
+            colony.ant(j).fitness = fitnessFunction(colony.ant(j).tour , graph);
         end
         allAntsFitness = [colony.ant(:).fitness];
         [minVal, minIndex] = min(allAntsFitness);
@@ -56,7 +56,7 @@ for i = 1: maxIter
         end
         colony.queen.tour = bestTour;
         colony.queen.fitness = bestFitness;
-        tau = updatePheromone(tau, colony);
+        tau = updatePheromone(tau, colony(j));
         tau = (1 - rho) .* tau;
         outmsg = ['Iteration #' , num2str(t), ' Shortest Length = ' , num2str(colony.queen.fitness) ];
         disp(outmsg)
