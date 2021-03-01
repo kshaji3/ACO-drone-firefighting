@@ -56,7 +56,7 @@ for i = 1: maxIter
         end
         colony.queen.tour = bestTour;
         colony.queen.fitness = bestFitness;
-        tau = updatePheromone(tau, colony(j));
+        tau = updatePheromone(tau, j, colony);
         tau = (1 - rho) .* tau;
         outmsg = ['Iteration #' , num2str(t), ' Shortest Length = ' , num2str(colony.queen.fitness) ];
         disp(outmsg)
