@@ -1,7 +1,7 @@
 function [ fitness ] = fitnessFunction ( tour , graph)
     fitness = 0;
-
-    for i = 1 : length(tour) -1
+    length(tour)
+    for i = 1 : 1: length(tour) - 1
     
         currentNode = tour(i);
         nextNode = tour(i+1);

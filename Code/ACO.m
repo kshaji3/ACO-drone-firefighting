@@ -40,13 +40,13 @@ bestTour = [];
 colony = [];
 %colony = zeros(0, droneNo);
 allAntsFitness = zeros(0, droneNo);
-
 for i = 1: maxIter
     %create ants
     for j = 1: droneNo
-        colony(j) = createColonies(graph, colony, antNo, tau(:,:,j), eta, alpha, beta) %placeholder
+        
+        colony = createColonies(graph, droneNo, colony, antNo, tau(:,:,j), eta, alpha, beta) %works
         for i = 1: antNo %calculate fitnesses
-            colony(j).ant(i).fitness = fitnessFunction(); %placeholder
+            colony.ant(i).fitness = fitnessFunction();
         end
         allAntsFitness = [colony.ant(:).fitness];
         [minVal, minIndex] = min(allAntsFitness);
