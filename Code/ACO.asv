@@ -46,28 +46,28 @@ for i = 1: maxIter
         
         colony = createColonies(graph, j, colony, antNo, tau(:,:,j), eta, alpha, beta) %works
         for k = 1: antNo %calculate fitnesses
-            colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour , graph);
+            colony(j).ant(k).fitness = fitnessFunction(colony.ant(j).tour , graph);
         end
-        allAntsFitness = [colony(j).ant(:).fitness];
+        allAntsFitness = [colony.ant(:).fitness];
         [minVal, minIndex] = min(allAntsFitness);
         if minVal < bestFitness
-            bestFitness = colony(j).ant(minIndex).fitness;
-            bestTour = colony(j).ant(minIndex).tour;
+            bestFitness = colony.ant(minIndex).fitness;
+            bestTour = colony.ant(minIndex).tour;
         end
-        colony(j).queen.tour = bestTour;
-        colony(j).queen.fitness = bestFitness;
+        colony.queen.tour = bestTour;
+        colony.queen.fitness = bestFitness;
         tau = updatePheromone(tau, j, colony);
-        tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
-        outmsg = ['Iteration #' , num2str(i), ' Shortest Length = ' , num2str(colony(j).queen.fitness) ];
+        tau = (1 - rho) .* tau;
+        outmsg = ['Iteration #' , num2str(t), ' Shortest Length = ' , num2str(colony.queen.fitness) ];
         disp(outmsg)
-        subplot(1, 4, 1)
-        title(['Iteration #' , num2str(i) ])
-        subplot(1, 4, 3)
+        subplot(1, 3, 1)
+        title(['Iteration #' , num2str(t) ])
+        subplot(1, 3, 2)
         cla
-        drawBestTour(colony(j), graph);
-        subplot(1, 4, 4)
+        drawBestTour(colony, graph);
+        subplot(1, 3, 3)
         cla
-        drawPheromone(tau(:, :, j), graph);
+        drawPheromone(tau, graph);
         drawnow
     end
 end
