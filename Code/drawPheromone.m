@@ -30,6 +30,6 @@ function [ ] = drawPheromone(tau , graph)
     end
 
 
-    title('All Phromones')
+    title('All Pheromones')
     box on
 end
