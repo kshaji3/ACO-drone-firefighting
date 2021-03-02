@@ -66,10 +66,10 @@ for i = 1: maxIter
         
         %Evaporation
         tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
-        outmsg = ['Iteration #' , num2str(i), ' Shortest Length = ' , num2str(colony(j).queen.fitness) ];
+        outmsg = ['Iteration #' , num2str((i-1) * 10 + j), ' Shortest Length = ' , num2str(colony(j).queen.fitness) ];
         disp(outmsg)
         subplot(1, 4, 1)
-        title(['Iteration #' , num2str(i) ])
+        title(['Iteration #' , num2str((i-1) * 10 + j) ])
         subplot(1, 4, 3)
         cla
         
