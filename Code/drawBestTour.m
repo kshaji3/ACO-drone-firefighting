@@ -1,6 +1,7 @@
-function [ ] = drawBestTour(colony , graph)
+function [ ] = drawBestTour(colony , droneNo, graph)
     queenTour = colony.queen.tour;
     hold on
+    
     for i = 1 : length(queenTour) - 1
     
         currentNode = queenTour(i);

@@ -51,31 +51,37 @@ for i = 1: maxIter
             %calculate fitnesses of all ants in a specific drone ant colony
             colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour, colony(j).ant(k).fireSum(1) , droneCapac(j),  graph);
         end
-        allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
-        [minVal, minIndex] = min(allAntsFitness(1, 2, j));
-        if minVal < bestFitness(j, 1)
-            bestFitness(j, 1) = colony(j).ant(minIndex).fitness(1, 2);
-            bestTour{j} = colony(j).ant(minIndex).tour;
+%         allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
+%         [minVal, minIndex] = min(allAntsFitness(1, 2, j))
+
+        %to do: can be optimized later for shorter search time
+        for k = 1: 1: antNo
+            if bestFitness(j, 1) > colony(j).ant(k).fitness(1, 2)
+                bestFitness(j, 1) = colony(j).ant(k).fitness(1, 2);
+                bestTour{j} = colony(j).ant(k).tour;
+            else
+            end
         end
+    
         %Find the best ant of this colony
         colony(j).queen.tour = bestTour{j};
         colony(j).queen.fitness = bestFitness(j, 1);
 %         
-%         %Update pheromone matrix
-%         tau = updatePheromone(tau, j, colony);
-%         
-%         %Evaporation
-%         tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
-%         outmsg = ['Iteration #' , num2str((i-1) * 10 + j), ' Shortest Length = ' , num2str(colony(j).queen.fitness) ];
-%         disp(outmsg)
-%         subplot(1, 4, 1)
-%         title(['Iteration #' , num2str((i-1) * 10 + j) ])
-%         subplot(1, 4, 3)
+        %Update pheromone matrix
+        tau = updatePheromone(tau, j, colony);
+        
+        %Evaporation
+        tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
+        outmsg = ['Iteration #' , num2str((i-1) * 10 + j), ' Shortest Length = ' , num2str(colony(j).queen.fitness(1, 1)) ];
+        disp(outmsg)
+        subplot(1, 4, 1)
+        title(['Iteration #' , num2str((i-1) * 10 + j) ])
+        subplot(1, 4, 3)
 %         cla
-%         
-%         %Visualize best tour and pheromone concentration
-%         drawBestTour(colony(j), graph);
-%         subplot(1, 4, 4)
+        
+        %Visualize best tour and pheromone concentration
+        drawBestTour(colony(j), j, graph);
+        subplot(1, 4, 4)
 %         cla
 %         drawPheromone(tau(:, :, j), graph);
 %         drawnow

@@ -1,11 +1,11 @@
 function [ tau ] = updatePheromone(tau, droneNo, colony)
 
-    %nodeNo = length(colony(droneNo).ant(1).tour);
+    nodeNo = length(colony(droneNo).ant(1).tour);
     antNo = length(colony(droneNo).ant(:));
 
     for i = 1 : antNo % for each ant
-        nodeNo = length(colony(droneNo).ant(i).tour);
         for j = 1 : nodeNo-1 % for each node in the tour
+            nodeNo = length(colony(droneNo).ant(1).tour);
             currentNode = colony(droneNo).ant(i).tour(j);
             nextNode = colony(droneNo).ant(i).tour(j+1);
         
