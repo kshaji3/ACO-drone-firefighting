@@ -83,7 +83,7 @@ for i = 1: maxIter
         drawBestTour(colony(j), j, graph);
         subplot(1, 4, 4)
 %         cla
-%         drawPheromone(tau(:, :, j), graph);
-%         drawnow
+        drawPheromone(tau(:, :, j), graph);
+        drawnow
     end
 end
