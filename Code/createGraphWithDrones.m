@@ -1,6 +1,6 @@
 function [graph] = createGraphWithDrones(fireLocX, fireLocY, droneLocX, droneLocY)
     %create the CONSTRUCTION GRAPH
-    graph.n = length(fireLocX)
+    graph.n = length(fireLocX);
     x = fireLocX;
     y = fireLocY;
     for i = 1: graph.n;

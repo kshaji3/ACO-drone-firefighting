@@ -3,5 +3,5 @@ function [nextNode] = rouletteWheel( P )
     cumsumP = cumsum(P);
     r = rand();
     nextNode = find(r <= cumsumP);
-    nextNode = nextNode(1)
+    nextNode = nextNode(1);
 end
