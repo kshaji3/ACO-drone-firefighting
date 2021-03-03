@@ -36,30 +36,30 @@ beta = 1;  % Desirability exponetial paramter
 %% Main Loop of ACO
 
 %initial base conditions
-bestFitness = inf;
+bestFitness = inf(droneNo, 1);
 bestTour = [];
 colony = [];
 %colony = zeros(0, droneNo);
-allAntsFitness = zeros(0, droneNo);
+allAntsFitness = [];
 for i = 1: maxIter
     
     %create ants
     for j = 1: droneNo
         
         colony = createColonies(graph, fireIntensity, droneCapac(j), j, colony, antNo, tau(:,:,j), eta, alpha, beta) %works
-%         for k = 1: antNo 
-%             %calculate fitnesses of all ants in a specific drone ant colony
-%             colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour , graph);
-%         end
-%         allAntsFitness = [colony(j).ant(:).fitness];
-%         [minVal, minIndex] = min(allAntsFitness);
-%         if minVal < bestFitness
-%             bestFitness = colony(j).ant(minIndex).fitness;
-%             bestTour = colony(j).ant(minIndex).tour;
-%         end
-%         %Find the best ant of this colony
-%         colony(j).queen.tour = bestTour;
-%         colony(j).queen.fitness = bestFitness;
+        for k = 1: antNo 
+            %calculate fitnesses of all ants in a specific drone ant colony
+            colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour, colony(j).ant(k).fireSum(1) , droneCapac(j),  graph);
+        end
+        allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
+        [minVal, minIndex] = min(allAntsFitness(1, 2, j));
+        if minVal < bestFitness(j, 1)
+            bestFitness(j, 1) = colony(j).ant(minIndex).fitness(1, 2);
+            bestTour{j} = colony(j).ant(minIndex).tour;
+        end
+        %Find the best ant of this colony
+        colony(j).queen.tour = bestTour{j};
+        colony(j).queen.fitness = bestFitness(j, 1);
 %         
 %         %Update pheromone matrix
 %         tau = updatePheromone(tau, j, colony);
