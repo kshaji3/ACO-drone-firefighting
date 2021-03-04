@@ -1,4 +1,4 @@
-function [graph] = createGraphWithDrones(fireLocX, fireLocY, droneLocX, droneLocY)
+function [graph] = createGraphWithDrones(fireLocX, fireLocY, drones)
     %create the CONSTRUCTION GRAPH
     graph.n = length(fireLocX);
     x = fireLocX;

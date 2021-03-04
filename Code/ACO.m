@@ -3,18 +3,18 @@ close all
 clc
 %% Problem Preparation
 %get the fires and drones
-[fireIntensity, fireLocX, fireLocY] = createFires();
-[droneCapac, droneLocX, droneLocY] = createDrones();
+fires = createFires();
+[drones] = createDrones();
 
 %Create the graph
-[graph] = createGraph(fireLocX, fireLocY);
+[graph] = createGraph(fires.locX, fires.locY);
 
 %Draw the graph
 figure
 subplot(2, 4, 1)
 drawGraph(graph);
 subplot(2, 4, 2);
-drawGraphWithDrones(graph, droneLocX, droneLocY);
+drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
 maxIter = 2;
@@ -47,10 +47,10 @@ for i = 1: maxIter
     %create ants
     for j = 1: droneNo
         
-        colony = createColonies(graph, fireIntensity, droneCapac(j), j, colony, antNo, tau(:,:,j), eta, alpha, beta);
+        colony = createColonies(graph, fires.intensity, drones.capac(j), j, colony, antNo, tau(:,:,j), eta, alpha, beta);
         for k = 1: antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
-            colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour, colony(j).ant(k).fireSum(1) , droneCapac(j),  graph);
+            colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour, colony(j).ant(k).fireSum(1) , drones.capac(j),  graph);
         end
 %         allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
 %         [minVal, minIndex] = min(allAntsFitness(1, 2, j))
