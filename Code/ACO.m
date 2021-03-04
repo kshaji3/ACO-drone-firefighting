@@ -11,9 +11,9 @@ clc
 
 %Draw the graph
 figure
-subplot(1, 4, 1)
+subplot(2, 4, 1)
 drawGraph(graph);
-subplot(1, 4, 2);
+subplot(2, 4, 2);
 drawGraphWithDrones(graph, droneLocX, droneLocY);
 
 %% Initial Parameters
@@ -74,16 +74,16 @@ for i = 1: maxIter
         tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
         outmsg = ['Iteration #' , num2str((i-1) * 10 + j), ' Shortest Length = ' , num2str(colony(j).queen.fitness(1, 1)) ];
         disp(outmsg)
-        subplot(1, 4, 1)
+        subplot(2, 4, 1)
         title(['Iteration #' , num2str((i-1) * 10 + j) ])
-        subplot(1, 4, 3)
+        subplot(2, 4, 3)
 %         cla
         
         %Visualize best tour and pheromone concentration
         drawBestTour(colony(j), j, graph);
-        subplot(1, 4, 4)
+        subplot(2, 4, 4)
 %         cla
-        drawPheromone(tau(:, :, j), graph);
+        %drawPheromone(tau(:, :, j), j, graph);
         drawnow
     end
 end

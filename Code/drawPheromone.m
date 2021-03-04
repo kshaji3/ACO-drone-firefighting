@@ -1,4 +1,4 @@
-function [ ] = drawPheromone(tau , graph)
+function [ ] = drawPheromone(tau , droneNo, graph)
     maxTau = max(tau(:));
     minTau = min(tau(:));
 
