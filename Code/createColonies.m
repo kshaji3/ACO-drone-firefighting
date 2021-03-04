@@ -11,8 +11,9 @@ function [ colony ] = createColonies( graph, fireIntensity, droneCapac, droneNo,
             currentNode =  colony(droneNo).ant(i).tour(end);
                
             P_allNodes = tau( currentNode , :  ) .^ alpha .* eta( currentNode , :  )  .^ beta;
-            P_allNodes(colony(droneNo).ant(i).tour) = 0 ;  % assigning 0 to all the nodes visited so far
-            P = P_allNodes ./ sum(P_allNodes);
+            P_allNodes(colony(droneNo).ant(i).tour) = 0 ;  
+            % assigning 0 to all the nodes visited so far
+            P = P_allNodes ./ sum(P_allNodes)
                
             nextNode = rouletteWheel(P); 
             colony(droneNo).ant(i).tour = [  colony(droneNo).ant(i).tour , nextNode ];

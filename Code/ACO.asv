@@ -41,9 +41,8 @@ bestTour = [];
 colony = [];
 %colony = zeros(0, droneNo);
 allAntsFitness = [];
-bestOverallFitness = inf;
 for i = 1: maxIter
-    tempFitness = 0;
+    
     %create ants
     for j = 1: droneNo
         
@@ -86,15 +85,5 @@ for i = 1: maxIter
 %         cla
         %drawPheromone(tau(:, :, j), j, graph);
         drawnow
-        tempFitness = tempFitness + colony(j).queen.fitness;
-    end
-    if (tempFitness < bestOverallFitness)
-        subplot(2, 4, 5)
-        cla
-        for j = 1: droneNo
-            drawBestTour(colony(k), k, graph);
-        end
-        bestOverallFitness = tempFitness;
-    else
     end
 end
