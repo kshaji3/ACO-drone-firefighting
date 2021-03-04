@@ -81,7 +81,7 @@ for i = 1: maxIter
 %         cla
         
         %Visualize best tour and pheromone concentration
-        drawBestTour(colony(j), j, graph);
+        drawBestTour(colony(j), drones, j, graph);
         subplot(2, 4, 4)
 %         cla
         %drawPheromone(tau(:, :, j), j, graph);
@@ -92,7 +92,7 @@ for i = 1: maxIter
         subplot(2, 4, 5)
         cla
         for j = 1: droneNo
-            drawBestTour(colony(k), k, graph);
+            drawBestTour(colony(j), drones, j, graph);
         end
         bestOverallFitness = tempFitness;
     else
