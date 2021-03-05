@@ -17,7 +17,7 @@ subplot(2, 4, 2);
 drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
-maxIter = 10;
+maxIter = 2;
 antNo = 5;
 droneNo = 5; %agents in CVRP
 
@@ -88,10 +88,7 @@ for i = 1: maxIter
 %         drawnow
         tempFitness = tempFitness + colony(j).queen.fitness;
     end
-    if i ~= maxIter
-       cla(subplot(2, 4, 3))
-    else
-    end
+    if (i < 
     if (tempFitness < bestOverallFitness)
         subplot(2, 4, 5)
         cla

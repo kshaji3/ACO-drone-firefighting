@@ -1,6 +1,6 @@
 function [ ] = drawPheromone(tau , droneNo, graph)
-    maxTau = max(tau(:));
-    minTau = min(tau(:));
+    maxTau = max(tau(:))
+    minTau = min(tau(:))
 
     tau_normalized = (tau - minTau) ./ (maxTau - minTau);
 
