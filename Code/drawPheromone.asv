@@ -1,12 +1,12 @@
 function [ ] = drawPheromone(tau , graph)
 
-maxTau = max(tau(:));
-minTau = min(tau(:));
+    maxTau = max(tau(:));
+    minTau = min(tau(:));
 
-tau_normalized = (tau - minTau) ./ (maxTau - minTau);
-
-for i = 1 : graph.n -1 
-    for j = i+1 : graph.n
+    tau_normalized = (tau - minTau) ./ (maxTau - minTau);
+    
+    for i = 1 : graph.n -1 
+        for j = i+1 : graph.n
         x1 = graph.node(i).x;
         y1 = graph.node(i).y;
         

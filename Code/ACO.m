@@ -88,7 +88,7 @@ while t <= maxIter && bestOverallFitness ~= 0
         drawBestTour(colony(d), drones, d, graph);
         subplot(2, 4, 4)
 %         cla
-%         drawPheromone(tau(:, :, d), d, graph);
+        drawPheromone(tau(:, :, d), graph);
         drawnow
         tempFitness = tempFitness + colony(d).queen.fireFitness;
     end
