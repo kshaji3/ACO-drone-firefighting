@@ -3,7 +3,8 @@ function [ colony ] = createColonies( graph, fireIntensity, droneCapac, droneNo,
     for i = 1 : antNo
     
         initial_node = randi( [1 , nodeNo] ); % select a random node 
-        colony(droneNo).ant(i).fireSum(1) = fireIntensity(initial_node);
+        colony(droneNo).ant(i).fireSum = fireIntensity(initial_node);
+        colony(droneNo).ant(i).fires(1) = fireIntensity(initial_node);
         colony(droneNo).ant(i).tour(1) = initial_node;
         
         %experimental portion
@@ -20,6 +21,7 @@ function [ colony ] = createColonies( graph, fireIntensity, droneCapac, droneNo,
                
             nextNode = rouletteWheel(P); 
             colony(droneNo).ant(i).tour = [  colony(droneNo).ant(i).tour , nextNode ];
+            colony(droneNo).ant(i).fires = [ colony(droneNo).ant(i).fires, fireIntensity(nextNode)];
             colony(droneNo).ant(i).fireSum = [colony(droneNo).ant(i).fireSum + fireIntensity(nextNode)];
         end
             
