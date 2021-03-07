@@ -9,8 +9,8 @@ function [ tau ] = updatePheromone(tau, droneNo, colony)
             currentNode = colony(droneNo).ant(i).tour(j);
             nextNode = colony(droneNo).ant(i).tour(j+1);
         
-            tau(currentNode, nextNode, droneNo) = tau(currentNode, nextNode, droneNo)  + 1./ colony(droneNo).ant(i).fitness(1, 2);
-            tau(nextNode, currentNode, droneNo) = tau(nextNode, currentNode, droneNo)  + 1./ colony(droneNo).ant(i).fitness(1, 2);
+            tau(currentNode, nextNode, droneNo) = tau(currentNode, nextNode, droneNo)  + 1./ colony(droneNo).ant(i).fireFitness;
+            tau(nextNode, currentNode, droneNo) = tau(nextNode, currentNode, droneNo)  + 1./ colony(droneNo).ant(i).fireFitness;
 
         end
     end

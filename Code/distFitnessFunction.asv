@@ -1,4 +1,4 @@
-function [ fitness ] = fitnessFunction ( tour , fireSum, droneCapac, graph)
+function [ fitness ] =  ( tour , fireSum, droneCapac, graph)
     fitness = zeros(1, 2);
     for i = 1 : 1: length(tour) - 1
     
