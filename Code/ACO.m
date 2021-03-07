@@ -17,7 +17,7 @@ subplot(2, 4, 2);
 drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
-maxIter = 10;
+maxIter = 5;
 antNo = 5;
 droneNo = 5; %agents in CVRP
 
@@ -26,8 +26,8 @@ eta = 1 ./ graph.edges; %edge desirability
 
 %Start the process of creating a 3D tau matrix
 tau = tau0 * ones(graph.n, graph.n);
-for i = 1: 1: droneNo - 1
-    tau(:,:,i + 1) = tau0 * ones(graph.n, graph.n);
+for t = 1: 1: droneNo - 1
+    tau(:,:,t + 1) = tau0 * ones(graph.n, graph.n);
 end
 
 rho = 0.5; % Evaporation rate 
@@ -42,61 +42,61 @@ colony = [];
 %colony = zeros(0, droneNo);
 allAntsFitness = [];
 bestOverallFitness = inf;
-for i = 1: maxIter
+for t = 1: maxIter
     tempFitness = 0;
     %create ants
-    for j = 1: droneNo
+    for d = 1: droneNo
         
-        colony = createColonies(graph, fires.intensity, drones.capac(j), j, colony, antNo, tau(:,:,j), eta, alpha, beta);
+        colony = createColonies(graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
         for k = 1: antNo 
-            %calculate fitnesses of all ants in a specific drone ant colony
-            colony(j).ant(k).fitness = fitnessFunction(colony(j).ant(k).tour, colony(j).ant(k).fireSum(1) , drones.capac(j),  graph);
+            %calculate fitnesses of all ants in a spec  ific drone ant colony
+            colony(d).ant(k).fitness = fitnessFunction(colony(d).ant(k).tour, colony(d).ant(k).fireSum(1) , drones.capac(d),  graph);
         end
 %         allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
 %         [minVal, minIndex] = min(allAntsFitness(1, 2, j))
 
         %to do: can be optimized later for shorter search time
         for k = 1: 1: antNo
-            if bestFitness(j, 1) > colony(j).ant(k).fitness(1, 2)
-                bestFitness(j, 1) = colony(j).ant(k).fitness(1, 2);
-                bestTour{j} = colony(j).ant(k).tour;
+            if bestFitness(d, 1) > colony(d).ant(k).fitness(1, 2)
+                bestFitness(d, 1) = colony(d).ant(k).fitness(1, 2);
+                bestTour{d} = colony(d).ant(k).tour;
             else
             end
         end
     
         %Find the best ant of this colony
-        colony(j).queen.tour = bestTour{j};
-        colony(j).queen.fitness = bestFitness(j, 1);
+        colony(d).queen.tour = bestTour{d};
+        colony(d).queen.fitness = bestFitness(d, 1);
 %         
         %Update pheromone matrix
-        tau = updatePheromone(tau, j, colony);
+        tau = updatePheromone(tau, d, colony);
         
         %Evaporation
-        tau(:, :, j) = (1 - rho) .* tau(:, :, 1);
-        outmsg = ['Iteration #', num2str(i), 'Drone #' , num2str(j), 'Fitness # ', num2str(colony(j).queen.fitness(1, 1)) ];
+        tau(:, :, d) = (1 - rho) .* tau(:, :, 1);
+        outmsg = ['Iteration #', num2str(t), 'Drone #' , num2str(d), 'Fitness # ', num2str(colony(d).queen.fitness(1, 1)) ];
         disp(outmsg)
         subplot(2, 4, 1)
-        title(['Iteration #' , num2str((i-1) * 5 + j) ])
+        title(['Iteration #' , num2str((t-1) * 5 + d) ])
         subplot(2, 4, 3)
 %         cla
         
         %Visualize best tour and pheromone concentration
-        drawBestTour(colony(j), drones, j, graph);
+        drawBestTour(colony(d), drones, d, graph);
         subplot(2, 4, 4)
 %         cla
-%         drawPheromone(tau(:, :, j), j, graph);
-%         drawnow
-        tempFitness = tempFitness + colony(j).queen.fitness;
+        drawPheromone(tau(:, :, d), d, graph);
+        drawnow
+        tempFitness = tempFitness + colony(d).queen.fitness;
     end
-    if i ~= maxIter
+    if t ~= maxIter
        cla(subplot(2, 4, 3))
     else
     end
     if (tempFitness < bestOverallFitness)
         subplot(2, 4, 5)
         cla
-        for j = 1: droneNo
-            drawBestTour(colony(j), drones, j, graph);
+        for d = 1: droneNo
+            drawBestTour(colony(d), drones, d, graph);
         end
         bestOverallFitness = tempFitness;
     else
