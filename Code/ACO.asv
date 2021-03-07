@@ -37,12 +37,14 @@ beta = 1;  % Desirability exponetial paramter
 
 %initial base conditions
 bestFireFitness = inf(1, droneNo);
+bestFireDist = zeros(1, droneNo); %best fire's distance
 bestTour = [];
 colony = [];
 %colony = zeros(0, droneNo);
 allAntsFitness = [];
 bestOverallFitness = inf;
-for t = 1: maxIter
+t = 1;
+while t <= maxIter 
     tempFitness = 0;
     %create ants
     for d = 1: droneNo
@@ -61,20 +63,21 @@ for t = 1: maxIter
             if bestFireFitness(1, d) > colony(d).ant(k).fireFitness
                 bestFireFitness(1, d) = colony(d).ant(k).fireFitness;
                 bestTour{d} = colony(d).ant(k).tour;
+                bestFireDist(1, d) = colony(d).ant(k).distFitness;
             else
             end
         end
     
         %Find the best ant of this colony
         colony(d).queen.tour = bestTour{d};
-        colony(d).queen.fitness = bestFireFitness(d, 1);
+        colony(d).queen.fireFitness = bestFireFitness(1, d);
 %         
         %Update pheromone matrix
         tau = updatePheromone(tau, d, colony);
         
         %Evaporation
         tau(:, :, d) = (1 - rho) .* tau(:, :, 1);
-        outmsg = ['Iteration #', num2str(t), 'Drone #' , num2str(d), 'Fitness # ', num2str(colony(d).queen.fitness(1, 1)) ];
+        outmsg = ['Iteration #', num2str(t), 'Drone #' , num2str(d), 'Fitness # ', num2str(colony(d).queen.fireFitness(1, 1)) ];
         disp(outmsg)
         subplot(2, 4, 1)
         title(['Iteration #' , num2str((t-1) * 5 + d) ])
@@ -87,7 +90,7 @@ for t = 1: maxIter
 %         cla
 %         drawPheromone(tau(:, :, d), d, graph);
         drawnow
-        tempFitness = tempFitness + colony(d).queen.fitness;
+        tempFitness = tempFitness + colony(d).queen.fireFitness;
     end
     if t ~= maxIter
        cla(subplot(2, 4, 3))
@@ -101,4 +104,5 @@ for t = 1: maxIter
         bestOverallFitness = tempFitness;
     else
     end
+    t = t + 1;
 end

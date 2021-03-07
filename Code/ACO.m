@@ -44,7 +44,7 @@ colony = [];
 allAntsFitness = [];
 bestOverallFitness = inf;
 t = 1;
-while t <= maxIter
+while t <= maxIter && bestOverallFitness ~= 0
     tempFitness = 0;
     %create ants
     for d = 1: droneNo
