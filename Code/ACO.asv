@@ -48,11 +48,12 @@ while t <= maxIter && bestOverallFitness ~= 0
     tempFitness = 0;
     %create ants
     for d = 1: droneNo
+        if (bestFireFitness
         colony = createColonies(graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
         for k = 1: antNo 
             %calculate fitnesses of all ants in a spec  ific drone ant colony
             colony(d).ant(k).distFitness = distFitnessFunction(drones, d, colony(d).ant(k).tour,  graph);
-            colony(d).ant(k).fireFitness = fireFitnessFunction(colony(d).ant(k), drones.capac(d), droneNo, length(fires.locX));
+            colony(d).ant(k).fireFitness = fireFitnessFunction(colony(d).ant(k).fireSum, drones.capac(d), length(colony(d).ant(k).fires), droneNo, length(fires.locX));
         end
 %         allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
 %         [minVal, minIndex] = min(allAntsFitness(1, 2, j))
