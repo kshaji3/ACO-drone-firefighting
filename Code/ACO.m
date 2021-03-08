@@ -47,17 +47,15 @@ t = 1;
 while t <= maxIter && bestOverallFitness ~= 0
     tempFitness = 0;
     %create ants
+%     d = 1;
+%     while d <= droneNo
     for d = 1: droneNo
         colony = createColonies(graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
         for k = 1: antNo 
-            %calculate fitnesses of all ants in a spec  ific drone ant colony
+            %calculate fitnesses of all ants in a specific drone ant colony
             colony(d).ant(k).distFitness = distFitnessFunction(drones, d, colony(d).ant(k).tour,  graph);
             colony(d).ant(k).fireFitness = fireFitnessFunction(colony(d).ant(k), drones.capac(d), droneNo, length(fires.locX));
         end
-%         allAntsFitness(:, :, j) = [colony(j).ant(:).fitness];
-%         [minVal, minIndex] = min(allAntsFitness(1, 2, j))
-
-        %to do: can be optimized later for shorter search time
         for k = 1: 1: antNo
             if bestFireFitness(1, d) > colony(d).ant(k).fireFitness
                 bestFireFitness(1, d) = colony(d).ant(k).fireFitness;
@@ -90,18 +88,17 @@ while t <= maxIter && bestOverallFitness ~= 0
 %         drawPheromone(tau(:, :, d), graph);
 %         drawnow
         tempFitness = tempFitness + colony(d).queen.fireFitness;
+        subplot(2, 4, 5)
+        if colony(d).queen.fireFitness == 0
+           drawBestTour(colony(d), drones, d, graph);
+        else
+        end
+%         d = d + 1;
     end
     if t ~= maxIter
        cla(subplot(2, 4, 3))
     else
     end
-    if (tempFitness < bestOverallFitness)
-        cla(subplot(2, 4, 5))
-        for d = 1: droneNo
-            drawBestTour(colony(d), drones, d, graph);
-        end
-        bestOverallFitness = tempFitness;
-    else
-    end
+
     t = t + 1;
 end
