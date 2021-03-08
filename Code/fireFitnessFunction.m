@@ -1,8 +1,8 @@
 function [ fireFitness ] = fireFitnessFunction (ant, droneCapac, totalDrones, totalFires)
-    fireFitness = (abs(droneCapac - ant.fireSum))^1;
+    fireFitness = fireSumFitness(droneCapac, ant.fireSum);
     iDronePerFire = totalFires / totalDrones; %ideal drones per fire
-    fireFitness = fireFitness + (abs(iDronePerFire - length(ant.fires)))^(1/2);
+    fireFitness = fireFitness + fireEqFitness(iDronePerFire, length(ant.fires))
     for f = 1: length(ant.fires)
-        fireFitness = fireFitness + (abs(droneCapac / iDronePerFire - ant.fires(f)))^(1/3);
+        fireFitness = fireFitness + fireIntFitness(droneCapac, iDronePerFire, ant.fires(f));
     end
 end

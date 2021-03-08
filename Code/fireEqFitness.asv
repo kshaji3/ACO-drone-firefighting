@@ -1,0 +1,4 @@
+function [ fireEqFitness ] = fireEqFitness (ant, droneCapac, totalDrones, totalFires)
+    %if fires
+   fireEqFitness = (abs(iDronePerFire - length(ant.fires)))^(1/2);
+end
