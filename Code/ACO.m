@@ -1,5 +1,4 @@
 clear all
-close all
 clc
 %% Problem Preparation
 %get the fires and drones
@@ -17,8 +16,8 @@ subplot(2, 4, 2);
 drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
-maxIter = 5;
-antNo = 5;
+maxIter = 5; %1
+antNo = 5; %5
 droneNo = 5; %agents in CVRP
 
 tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
@@ -38,9 +37,8 @@ beta = 1;  % Desirability exponetial paramter
 %initial base conditions
 bestFireFitness = inf(1, droneNo);
 bestFireDist = zeros(1, droneNo); %best fire's distance
-bestTour = [];
+bestTour = {};
 colony = [];
-%colony = zeros(0, droneNo);
 allAntsFitness = [];
 bestOverallFitness = inf;
 t = 1;
@@ -70,10 +68,10 @@ while t <= maxIter && bestOverallFitness ~= 0
         colony(d).queen.fireFitness = bestFireFitness(1, d);
 %         
         %Update pheromone matrix
-        tau = updatePheromone(tau, d, colony);
+        tau(:, :, d) = updatePheromone(tau(:, :, d), colony(d));
         
         %Evaporation
-        tau(:, :, d) = (1 - rho) .* tau(:, :, 1);
+        tau(:, :, d) = (1 - rho) .* tau(:, :, d);
         outmsg = ['Iteration #', num2str(t), 'Drone #' , num2str(d), 'Fitness # ', num2str(colony(d).queen.fireFitness(1, 1)) ];
         disp(outmsg)
         subplot(2, 4, 1)
@@ -99,6 +97,7 @@ while t <= maxIter && bestOverallFitness ~= 0
        cla(subplot(2, 4, 3))
     else
     end
-
+    
+    
     t = t + 1;
 end
