@@ -1,5 +1,14 @@
-function [ colony ] = createColonies( graph, fireIntensity, droneCapac, droneNo, colony , antNo, tau, eta, alpha,  beta)
+function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneCapac, droneNo, colony , antNo, tau, eta, alpha,  beta)
     nodeNo = graph.n;
+    if iterationNum > 1
+        for i = 1: antNo
+            while isempty(colony(droneNo).ant(i).tour) == 0
+                colony(droneNo).ant(i).tour(1) = [];
+                colony(droneNo).ant(i).fires(1) = [];
+            end
+        end
+    else
+    end
     for i = 1 : antNo
     
         initial_node = randi( [1 , nodeNo] ); % select a random node 
@@ -11,11 +20,11 @@ function [ colony ] = createColonies( graph, fireIntensity, droneCapac, droneNo,
         while droneCapac > colony(droneNo).ant(i).fireSum && j < nodeNo
             currentNode =  colony(droneNo).ant(i).tour(end);
 %             zz = tau(currentNode, :)
-            P_allNodes = tau( currentNode , :  ) .^ alpha .* eta( currentNode , :  )  .^ beta %search here for fix
+            P_allNodes = tau( currentNode , :  ) .^ alpha .* eta( currentNode , :  )  .^ beta; %search here for fix
 %             z = colony(droneNo).ant(i).tour
-            P_allNodes(colony(droneNo).ant(i).tour) = 0
+            P_allNodes(colony(droneNo).ant(i).tour) = 0;
 %             w = P_allNodes
-            P = P_allNodes ./ sum(P_allNodes)
+            P = P_allNodes ./ sum(P_allNodes);
                
             nextNode = rouletteWheel(P); 
             colony(droneNo).ant(i).tour = [  colony(droneNo).ant(i).tour , nextNode ];

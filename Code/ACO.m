@@ -17,7 +17,7 @@ drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
 maxIter = 10; %1
-antNo = 10; %5
+antNo = 50; %5
 droneNo = 5; %agents in CVRP
 
 tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
@@ -39,7 +39,7 @@ bestFireFitness = inf(1, droneNo);
 bestFireDist = zeros(1, droneNo); %best fire's distance
 bestTour = {};
 colony = [];
-bestOverallFitness = inf;
+bestOverallFitness = 0;
 t = 1;
 while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
     tempFitness = 0;
@@ -47,7 +47,7 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
 %     d = 1;
 %     while d <= droneNo
     for d = 1: droneNo
-        colony = createColonies(graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
+        colony = createColonies(t, graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
         for k = 1: antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
             colony(d).ant(k).distFitness = distFitnessFunction(drones, d, colony(d).ant(k).tour,  graph);
@@ -88,6 +88,7 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
         subplot(2, 4, 5)
         if colony(d).queen.fireFitness == 0.01
            drawBestTour(colony(d), drones, d, graph);
+           bestOverallFitness = bestOverallFitness + 0.01;
         else
         end
 %         d = d + 1;
