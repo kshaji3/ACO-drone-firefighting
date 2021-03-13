@@ -10,18 +10,37 @@ Load the data:
 
 ```{r}
 library("readxl")
+library("writexl")
+library("xlsx")
+library("tidyverse")
 ORIG_TABLE <- read_excel("uncleaned-wa-dnr-data.xlsx")
 ORIG_TABLE
 ```
 Create a column with the fire type, sector, and objectid
 ```{r}
 env_data <- ORIG_TABLE[c(1, 7, 12, 13, 32, 33, 40)]
+write_xlsx(env_data, "environmental_data.xlsx")
 env_data
 ```
-Create a 
+Create a table with intensity (already sorted in descending for acres burned)
 ```{r}
 fire_int_data <- ORIG_TABLE[c(1, 14, 17, 26, 29)]
+write_xlsx(fire_int_data, "fire_intensity_data.xlsx")
 fire_int_data
+```
+
+
+```{r}
+```
+Sort the intensity data by intensity of burning_merch_area
+```{r}
+fire_merch_data <- subset(fire_int_data, BURN_MERCH_AREA != "<Null>")
+#fire_merch_area %>% arrange(desc(BURN_MERCH_AREA))
+fire_merch_data <- transform(fire_merch_data, BURN_MERCH_AREA = as.numeric(BURN_MERCH_AREA))
+fire_merch_data <- fire_merch_data %>% arrange(desc(BURN_MERCH_AREA))
+write.xlsx(fire_merch_data, "fire_intensity_data.xlsx", sheetName = "Fire_Merch_Data", append = TRUE)
+fire_merch_data
+
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
