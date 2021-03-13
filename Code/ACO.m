@@ -16,7 +16,7 @@ subplot(2, 4, 2);
 drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
-maxIter = 10; %1
+maxIter = 20; %1
 antNo = 50; %5
 droneNo = 5; %agents in CVRP
 
@@ -41,7 +41,7 @@ bestTour = {};
 colony = [];
 bestOverallFitness = 0;
 t = 1;
-while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
+while t <= maxIter %&& bestOverallFitness ~= (0.01 * droneNo)
     tempFitness = 0;
     %create ants
 %     d = 1;
@@ -71,27 +71,32 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
         
         %Evaporation
         tau(:, :, d) = (1 - rho) .* tau(:, :, d);
-        outmsg = ['Iteration #', num2str(t), 'Drone #' , num2str(d), 'Fitness # ', num2str(colony(d).queen.fireFitness(1, 1)) ];
+        outmsg = ['Iteration = #', num2str(t), ' Drone = #' , num2str(d), ' Fitness = # ', num2str(colony(d).queen.fireFitness(1, 1)) ];
         disp(outmsg)
-        subplot(2, 4, 1)
-        title(['Iteration #' , num2str((t-1) * 5 + d) ])
         subplot(2, 4, 3)
+        drawBestTour(colony(d), drones, d, graph);
+        title('Best Tour of Iteration # ', num2str(t))
 %         cla
         
         %Visualize best tour and pheromone concentration
-        drawBestTour(colony(d), drones, d, graph);
-        subplot(2, 4, 4)
-%         cla
-%         drawPheromone(tau(:, :, d), graph);
-%         drawnow
+        if (d < 5)
+            subplot(2, 4, d + 4);
+            cla
+            drawPheromone(tau(:, :, d), graph);
+            drawnow
+            title('Pheromones of Drone # ', num2str(d))
+        else
+        end
+            
         tempFitness = tempFitness + colony(d).queen.fireFitness;
-        subplot(2, 4, 5)
+        subplot(2, 4, 4)
         if colony(d).queen.fireFitness == 0.01
            drawBestTour(colony(d), drones, d, graph);
            bestOverallFitness = bestOverallFitness + 0.01;
         else
         end
-%         d = d + 1;
+        title('Best Overall Tour of All Iterations')
+
     end
     if t ~= maxIter
        cla(subplot(2, 4, 3))

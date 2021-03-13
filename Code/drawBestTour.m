@@ -52,6 +52,5 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
         Y = [drones.locY(i)];
         plot(X,Y, 'ok', 'MarkerSize', 6, 'MarkerEdgeColor' , 'blue' , 'MarkerFaceColor' , 'blue');
     end
-    title('Best tour (the queen)')
     box('on');
 end
