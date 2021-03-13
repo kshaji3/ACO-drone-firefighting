@@ -76,9 +76,9 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
     
         %Find the best ant of this colony
         colony(d).queen.tour = bestTour{d};
-        colony(d).queen.fireTotDiff = bestFireFit1(1, d);
-        colony(d).queen.fireEq = bestFireFit2(1, d);
-        colony(d).queen.fireInt = bestFireFit3(1, d);
+        colony(d).queen.fireTotDiff = bestfFireFit1(1, d);
+        colony(d).queen.fireEq = fireFit2(1, d);
+        colony(d).queen.fireInt = fireFit3(1, d);
         colony(d).queen.fireFitness = bestFireFitness(1, d);
 %         
         %Update pheromone matrix
