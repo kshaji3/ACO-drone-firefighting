@@ -10,11 +10,18 @@ Load the data:
 
 ```{r}
 library("readxl")
-read_excel("uncleaned-wa-dnr-data.xlsx")
+ORIG_TABLE <- read_excel("uncleaned-wa-dnr-data.xlsx")
+ORIG_TABLE
 ```
-Create subtables
+Create a column with the fire type, sector, and objectid
 ```{r}
-
+env_data <- ORIG_TABLE[c(1, 7, 12, 13, 32, 33, 40)]
+env_data
+```
+Create a 
+```{r}
+fire_int_data <- ORIG_TABLE[c(1, 14, 17, 26, 29)]
+fire_int_data
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
