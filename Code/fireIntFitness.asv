@@ -1,3 +1,0 @@
-function [fireIntFitness] = fireIntFitness(droneCapac, iDronePerFire, firePoint)
-    fireIntFitness = (abs(droneCapac / iDronePerFire - firePoint))^(/3);
-end

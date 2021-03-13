@@ -63,7 +63,7 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
             colony(d).ant(k).fireInt = fireFit3;
         end
         for k = 1: 1: antNo
-            if bestFireFitness(1, d) >= colony(d).ant(k).fireFitness
+            if bestFireFitness(1, d) > colony(d).ant(k).fireFitness
                 bestFireFitness(1, d) = colony(d).ant(k).fireFitness;
                 bestTour{d} = colony(d).ant(k).tour;
                 bestFireDist(1, d) = colony(d).ant(k).distFitness;
