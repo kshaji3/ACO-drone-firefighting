@@ -13,6 +13,7 @@ library("readxl")
 library("writexl")
 library("xlsx")
 library("tidyverse")
+library("dplyr")
 ORIG_TABLE <- read_excel("uncleaned-wa-dnr-data.xlsx")
 head(ORIG_TABLE)
 ```
@@ -56,5 +57,9 @@ Create a new dataframe that contains only Pacific Cascade fires:
 wadnr_pascascades <- wadnr_under_x %>% subset(REGION_NAME == "PACIFIC CASC")
 head(wadnr_pascascades)
 ```
-
+Create a new dataframe that contains random samples of the wadnr_pascascades dataframe
+```{r}
+test_sample <- sample_n(wadnr_pascascades, 10)
+head(test_sample)
+```
 
