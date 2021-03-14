@@ -46,12 +46,12 @@ colony = [];
 bestOverallFitness = 0;
 t = 1;
 bestSolutionsFound = zeros(1, droneNo) %check if best solutions are found
-while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
+% && bestOverallFitness ~= (0.01 * droneNo)
+for d = 1: droneNo
+
     tempFitness = 0;
     %create ants
-%     d = 1;
-%     while d <= droneNo
-    for d = 1: droneNo
+    while t <= maxIter && bestSolutionsFound(d) ~= 1
         colony = createColonies(t, graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
         for k = 1: antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
@@ -113,13 +113,11 @@ while t <= maxIter && bestOverallFitness ~= (0.01 * droneNo)
         else
         end
         title('Best Overall Tour of All Iterations')
-
+        if t ~= maxIter
+            cla(subplot(2, 4, 3))
+        else
+        end
+        t = t + 1;
     end
-    if t ~= maxIter
-       cla(subplot(2, 4, 3))
-    else
-    end
-    
-    
-    t = t + 1;
+    t = 1;
 end
