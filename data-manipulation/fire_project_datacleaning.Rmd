@@ -5,8 +5,8 @@ output: html_notebook
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-Load the data:
+
+Load the data from the Washington DNR:
 
 ```{r}
 library("readxl")
@@ -14,37 +14,47 @@ library("writexl")
 library("xlsx")
 library("tidyverse")
 ORIG_TABLE <- read_excel("uncleaned-wa-dnr-data.xlsx")
-ORIG_TABLE
-```
-Create a column with the fire type, sector, and objectid
-```{r}
-env_data <- ORIG_TABLE[c(1, 7, 12, 13, 32, 33, 40)]
-write_xlsx(env_data, "environmental_data.xlsx")
-env_data
-```
-Create a table with intensity (already sorted in descending for acres burned)
-```{r}
-fire_int_data <- ORIG_TABLE[c(1, 14, 17, 26, 29)]
-write_xlsx(fire_int_data, "fire_intensity_data.xlsx")
-fire_int_data
+head(ORIG_TABLE)
 ```
 
+Clean the data to remove all unnecessary variables for the MATLAB simulation:
 
 ```{r}
+cleaned_wadnr_data <- ORIG_TABLE[c(-2:-6, -8, -10, -11, -15, -16, -18:-25, -27, -28, -30, -31, -34: -37, -39 )]
+head(cleaned_wadnr_data)
 ```
-Sort the intensity data by intensity of burning_merch_area
+
+Create a new dataframe with all the fires that have burned less than 100 acres:
+
 ```{r}
-fire_merch_data <- subset(fire_int_data, BURN_MERCH_AREA != "<Null>")
-#fire_merch_area %>% arrange(desc(BURN_MERCH_AREA))
-fire_merch_data <- transform(fire_merch_data, BURN_MERCH_AREA = as.numeric(BURN_MERCH_AREA))
-fire_merch_data <- fire_merch_data %>% arrange(desc(BURN_MERCH_AREA))
-write.xlsx(fire_merch_data, "fire_intensity_data.xlsx", sheetName = "Fire_Merch_Data", append = TRUE)
-fire_merch_data
-
+wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 100)
+head(wadnr_under_x)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+Create a new dataframe that contains only Northeastern fires
+```{r}
+wadnr_northeast <- wadnr_under_x %>% subset(REGION_NAME == "NORTHEAST")
+head(wadnr_northeast)
+```
+Create a new dataframe that contains only northwestern fires
+```{r}
+wadnr_northwest <- wadnr_under_x %>% subset(REGION_NAME == "NORTHWEST")
+head(wadnr_northwest)
+```
+Create a new dataframe that contains only southeastern fires:
+```{r}
+wadnr_southeast <- wadnr_under_x %>% subset(REGION_NAME == "SOUTHEAST")
+head(wadnr_southeast)
+```
+Create a new dataframe that contains only south puget fires:
+```{r}
+wadnr_southpuget <- wadnr_under_x %>% subset(REGION_NAME == "SO PUGET")
+head(wadnr_southpuget)
+```
+Create a new dataframe that contains only Pacific Cascade fires:
+```{r}
+wadnr_pascascades <- wadnr_under_x %>% subset(REGION_NAME == "PACIFIC CASC")
+head(wadnr_pascascades)
+```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
