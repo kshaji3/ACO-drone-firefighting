@@ -14,6 +14,7 @@ library("writexl")
 library("xlsx")
 library("tidyverse")
 library("dplyr")
+library("rlang")
 ORIG_TABLE <- read_excel("uncleaned-wa-dnr-data.xlsx")
 head(ORIG_TABLE)
 ```
@@ -31,35 +32,63 @@ Create a new dataframe with all the fires that have burned less than 100 acres:
 wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 100)
 head(wadnr_under_x)
 ```
+Function for creation of random samples of dataframes based on region
+
+```{r}
+generate_10_tables <- function(num_tables, num_rows, df, excel_name) {
+  for (val in 1: num_tables) {
+    test_sample <- sample_n(df, num_rows)
+    name <- quo((val))
+    quo_name(name)
+    write.xlsx(test_sample, excel_name, sheetName = name, append = TRUE)
+  }
+}
+
+```
 
 Create a new dataframe that contains only Northeastern fires
 ```{r}
 wadnr_northeast <- wadnr_under_x %>% subset(REGION_NAME == "NORTHEAST")
+excel_name <-  "northeast-samples.xlsx"
+num_tables <- 10
+num_rows <- 10
+generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northeast)
 ```
 Create a new dataframe that contains only northwestern fires
 ```{r}
 wadnr_northwest <- wadnr_under_x %>% subset(REGION_NAME == "NORTHWEST")
+excel_name <-  "northwest-samples.xlsx"
+num_tables <- 10
+num_rows <- 10
+generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northwest)
 ```
 Create a new dataframe that contains only southeastern fires:
 ```{r}
 wadnr_southeast <- wadnr_under_x %>% subset(REGION_NAME == "SOUTHEAST")
+excel_name <-  "southeast-samples.xlsx"
+num_tables <- 10
+num_rows <- 10
+generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southeast)
 ```
 Create a new dataframe that contains only south puget fires:
 ```{r}
 wadnr_southpuget <- wadnr_under_x %>% subset(REGION_NAME == "SO PUGET")
+excel_name <-  "southpuget-samples.xlsx"
+num_tables <- 10
+num_rows <- 10
+generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southpuget)
 ```
 Create a new dataframe that contains only Pacific Cascade fires:
 ```{r}
 wadnr_pascascades <- wadnr_under_x %>% subset(REGION_NAME == "PACIFIC CASC")
+excel_name <-  "pascascades-samples.xlsx"
+num_tables <- 10
+num_rows <- 10
+generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_pascascades)
-```
-Create a new dataframe that contains random samples of the wadnr_pascascades dataframe
-```{r}
-test_sample <- sample_n(wadnr_pascascades, 10)
-head(test_sample)
 ```
 
