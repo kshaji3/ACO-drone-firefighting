@@ -32,6 +32,7 @@ Create a new dataframe with all the fires that have burned less than 100 acres:
 wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 100)
 head(wadnr_under_x)
 ```
+
 Function for creation of random samples of dataframes based on region
 
 ```{r}
@@ -46,45 +47,130 @@ generate_10_tables <- function(num_tables, num_rows, df, excel_name) {
 
 ```
 
+Functions for relativization of regional latitude and longitude values
+Goal: find the lowest latitude value, then floor it and use it as a baseline for distances
+Lower value in latitude = further south
+Lower value in longitude = further west
+The idea is that this orients itself rather conveniently on a graphical plane as potential coordinates
+
+```{r}
+relativize_x_coordinate <- function(wadnr_regional) {
+  lowest_long <- floor(min(wadnr_regional$LON_COORD))
+  x_relative_coords <- (wadnr_regional$LON_COORD - lowest_long) * 85000 #(85000 = amount of meters between one degree of longitude)
+  return(x_relative_coords)
+}
+```
+```{r}
+relativize_y_coordinate <- function(wadnr_regional) {
+  lowest_lat <- floor(min(wadnr_regional$LAT_COORD))
+  y_relative_coords <- (wadnr_regional$LAT_COORD - lowest_lat) * 110000 #about 110 km in between degrees of latitude, and this is in meters
+  return(y_relative_coords)
+}
+```
+
 Create a new dataframe that contains only Northeastern fires
+
 ```{r}
 wadnr_northeast <- wadnr_under_x %>% subset(REGION_NAME == "NORTHEAST")
+```
+
+Add relative x and y coords to Northeastern fires
+
+```{r}
+wadnr_northeast$relative_x_coord <- relativize_x_coordinate(wadnr_northeast)
+wadnr_northeast$relative_y_coord <- relativize_y_coordinate(wadnr_northeast)
+```
+
+Generate samples of the northeast dataset and store them in an excel file
+
+```{r}
 excel_name <-  "northeast-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
 generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northeast)
 ```
+
 Create a new dataframe that contains only northwestern fires
 ```{r}
 wadnr_northwest <- wadnr_under_x %>% subset(REGION_NAME == "NORTHWEST")
+```
+
+Add relative x and y coords to northwestern fires
+```{r}
+wadnr_northwest$relative_x_coord <- relativize_x_coordinate(wadnr_northwest)
+wadnr_northwest$relative_y_coord <- relativize_y_coordinate(wadnr_northwest)
+```
+
+Create samples of 10 rows of northwest datapoints, and store them in excel sheets.
+
+```{r}
 excel_name <-  "northwest-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
 generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northwest)
 ```
+
 Create a new dataframe that contains only southeastern fires:
+
 ```{r}
 wadnr_southeast <- wadnr_under_x %>% subset(REGION_NAME == "SOUTHEAST")
+```
+
+Add relative x and y coords to Southeast fires
+```{r}
+wadnr_southeast$relative_x_coord <- relativize_x_coordinate(wadnr_southeast)
+wadnr_southeast$relative_y_coord <- relativize_y_coordinate(wadnr_southeast)
+```
+
+Create samples of 10 rows of southeast datapoints, and store them in excel sheets
+
+```{r}
 excel_name <-  "southeast-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
 generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southeast)
 ```
+
 Create a new dataframe that contains only south puget fires:
+
 ```{r}
 wadnr_southpuget <- wadnr_under_x %>% subset(REGION_NAME == "SO PUGET")
+```
+
+Add relative x and y coords to South Puget fires
+```{r}
+wadnr_southpuget$relative_x_coord <- relativize_x_coordinate(wadnr_southpuget)
+wadnr_southpuget$relative_y_coord <- relativize_y_coordinate(wadnr_southpuget)
+```
+
+Create samples of 10 rows of south puget datapoints, and store them in excel sheets
+
+```{r}
 excel_name <-  "southpuget-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
 generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southpuget)
 ```
+
 Create a new dataframe that contains only Pacific Cascade fires:
+
 ```{r}
 wadnr_pascascades <- wadnr_under_x %>% subset(REGION_NAME == "PACIFIC CASC")
+```
+
+Add relative x and y coords to Pacific Cascade fires
+```{r}
+wadnr_pascascades$relative_x_coord <- relativize_x_coordinate(wadnr_pascascades)
+wadnr_pascascades$relative_y_coord <- relativize_y_coordinate(wadnr_pascascades)
+```
+
+Create samples of 10 rows of Pacific Cascade fires, and store them in excel sheets
+
+```{r}
 excel_name <-  "pascascades-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
