@@ -33,10 +33,13 @@ wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 100)
 head(wadnr_under_x)
 ```
 
-Function for creation of random samples of dataframes based on region
+Function for creation of random samples of dataframes based on region. This function also deletes existing version(s) of the excel file it intends to create. This way the program does not ever result in excel-files with over 10 sheets.
 
 ```{r}
 generate_10_tables <- function(num_tables, num_rows, df, excel_name) {
+  if (file.exists(excel_name)) {
+    unlink(excel_name)
+  }
   for (val in 1: num_tables) {
     test_sample <- sample_n(df, num_rows)
     name <- quo((val))
@@ -92,11 +95,13 @@ head(wadnr_northeast)
 ```
 
 Create a new dataframe that contains only northwestern fires
+
 ```{r}
 wadnr_northwest <- wadnr_under_x %>% subset(REGION_NAME == "NORTHWEST")
 ```
 
 Add relative x and y coords to northwestern fires
+
 ```{r}
 wadnr_northwest$relative_x_coord <- relativize_x_coordinate(wadnr_northwest)
 wadnr_northwest$relative_y_coord <- relativize_y_coordinate(wadnr_northwest)
@@ -141,6 +146,7 @@ wadnr_southpuget <- wadnr_under_x %>% subset(REGION_NAME == "SO PUGET")
 ```
 
 Add relative x and y coords to South Puget fires
+
 ```{r}
 wadnr_southpuget$relative_x_coord <- relativize_x_coordinate(wadnr_southpuget)
 wadnr_southpuget$relative_y_coord <- relativize_y_coordinate(wadnr_southpuget)
