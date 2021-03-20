@@ -26,17 +26,17 @@ cleaned_wadnr_data <- ORIG_TABLE[c(-2:-6, -8, -10, -11, -15, -16, -18:-25, -27, 
 head(cleaned_wadnr_data)
 ```
 
-Create a new dataframe with all the fires that have burned less than 100 acres:
+Create a new dataframe with all the fires that have burned less than 50 acres:
 
 ```{r}
-wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 100)
+wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 50)
 head(wadnr_under_x)
 ```
 
 Function for creation of random samples of dataframes based on region. This function also deletes existing version(s) of the excel file it intends to create. This way the program does not ever result in excel-files with over 10 sheets.
 
 ```{r}
-generate_10_tables <- function(num_tables, num_rows, df, excel_name) {
+generate_tables <- function(num_tables, num_rows, df, excel_name) {
   if (file.exists(excel_name)) {
     unlink(excel_name)
   }
@@ -90,7 +90,7 @@ Generate samples of the northeast dataset and store them in an excel file
 excel_name <-  "northeast-samples.xlsx"
 num_tables <- 10
 num_rows <- 10
-generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
+generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northeast)
 ```
 
@@ -111,9 +111,7 @@ Create samples of 10 rows of northwest datapoints, and store them in excel sheet
 
 ```{r}
 excel_name <-  "northwest-samples.xlsx"
-num_tables <- 10
-num_rows <- 10
-generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
+generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northwest)
 ```
 
@@ -133,9 +131,7 @@ Create samples of 10 rows of southeast datapoints, and store them in excel sheet
 
 ```{r}
 excel_name <-  "southeast-samples.xlsx"
-num_tables <- 10
-num_rows <- 10
-generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
+generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southeast)
 ```
 
@@ -156,9 +152,7 @@ Create samples of 10 rows of south puget datapoints, and store them in excel she
 
 ```{r}
 excel_name <-  "southpuget-samples.xlsx"
-num_tables <- 10
-num_rows <- 10
-generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
+generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_southpuget)
 ```
 
@@ -178,9 +172,7 @@ Create samples of 10 rows of Pacific Cascade fires, and store them in excel shee
 
 ```{r}
 excel_name <-  "pascascades-samples.xlsx"
-num_tables <- 10
-num_rows <- 10
-generate_10_tables(num_tables, num_rows, wadnr_northeast, excel_name)
+generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_pascascades)
 ```
 
