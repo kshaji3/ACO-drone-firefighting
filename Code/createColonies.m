@@ -26,8 +26,8 @@ function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneC
             P_allNodes = tau( currentNode , :  ) .^ alpha .* eta( currentNode , :  )  .^ beta; %search here for fix
 %             z = colony(droneNo).ant(i).tour
             P_allNodes(colony(droneNo).ant(i).tour) = 0;
-            P_allNodes(toursFound) = 0
-            P = P_allNodes ./ sum(P_allNodes)
+            P_allNodes(toursFound) = 0;
+            P = P_allNodes ./ sum(P_allNodes);
             if isnan(P)
                 break
             else
