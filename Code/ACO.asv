@@ -104,11 +104,15 @@ for d = 1: droneNo
         end
             
         tempFitness = tempFitness + colony(d).queen.fireFitness;
-        if colony(d).queen.fireFitness == 0.01 && bestSolutionsFound(d) == 0
-           bestOverallFitness = bestOverallFitness + 0.01;
-           bestSolutionsFound(d) = 1;      
-        else
-        end
+%         subplot(2, 4, 4)
+%         if colony(d).queen.fireFitness == 0.01 && bestSolutionsFound(d) == 0
+%            drawBestTour(colony(d), drones, d, graph);
+%            bestOverallFitness = bestOverallFitness + 0.01;
+%            bestSolutionsFound(d) = 1;
+%            
+%         else
+%         end
+        title('Best Overall Tour of All Iterations')
         if t ~= maxIter
             cla(subplot(2, 4, 3))
         else
@@ -118,9 +122,10 @@ for d = 1: droneNo
     t = 1;
 end
 subplot(2, 4, 4)
-%graph best tours
-for d = 1: droneNo
-    drawBestTour(colony(d), drones, d, graph);
-    bestOverallFitness = bestOverallFitness + 0.01;
-end
-title('Best Overall Tour of All Iterations')
+        if colony(d).queen.fireFitness == 0.01 && bestSolutionsFound(d) == 0
+           drawBestTour(colony(d), drones, d, graph);
+           bestOverallFitness = bestOverallFitness + 0.01;
+           bestSolutionsFound(d) = 1;
+           
+        else
+        end
