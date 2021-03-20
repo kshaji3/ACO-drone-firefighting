@@ -45,14 +45,16 @@ bestTour = {};
 colony = [];
 bestOverallFitness = 0;
 t = 1;
+allUsedNodes = [];
 bestSolutionsFound = zeros(1, droneNo) %check if best solutions are found
 % && bestOverallFitness ~= (0.01 * droneNo)
+actualNumberDronesUsed = 1;
 for d = 1: droneNo
 
     tempFitness = 0;
     %create ants
     while t <= maxIter && bestSolutionsFound(d) ~= 1
-        colony = createColonies(t, graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta);
+        colony = createColonies(t, graph, fires.intensity, drones.capac(d), d, colony, antNo, tau(:,:,d), eta, alpha, beta, allUsedNodes);
         for k = 1: antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
             colony(d).ant(k).distFitness = distFitnessFunction(drones, d, colony(d).ant(k).tour,  graph);
@@ -115,11 +117,18 @@ for d = 1: droneNo
         end
         t = t + 1;
     end
+    allUsedNodes = cell2mat(bestTour);
     t = 1;
+    if length(allUsedNodes) == length(fires.locX)
+        break
+    else
+    end
+    actualNumberDronesUsed = actualNumberDronesUsed + 1;
 end
+
 subplot(2, 4, 4)
 %graph best tours
-for d = 1: droneNo
+for d = 1: actualNumberDronesUsed
     drawBestTour(colony(d), drones, d, graph);
     bestOverallFitness = bestOverallFitness + 0.01;
 end

@@ -1,4 +1,4 @@
-function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneCapac, droneNo, colony , antNo, tau, eta, alpha,  beta)
+function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneCapac, droneNo, colony , antNo, tau, eta, alpha,  beta, toursFound)
     nodeNo = graph.n;
     if iterationNum > 1
         for i = 1: antNo
@@ -12,6 +12,9 @@ function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneC
     for i = 1 : antNo
     
         initial_node = randi( [1 , nodeNo] ); % select a random node 
+        while ismembertol(initial_node, toursFound) == 1
+            initial_node = randi( [1 , nodeNo] ); % select a random node 
+        end
         colony(droneNo).ant(i).fireSum = fireIntensity(initial_node);
         colony(droneNo).ant(i).fires(1) = fireIntensity(initial_node);
         colony(droneNo).ant(i).tour(1) = initial_node;
@@ -23,9 +26,12 @@ function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneC
             P_allNodes = tau( currentNode , :  ) .^ alpha .* eta( currentNode , :  )  .^ beta; %search here for fix
 %             z = colony(droneNo).ant(i).tour
             P_allNodes(colony(droneNo).ant(i).tour) = 0;
-%             w = P_allNodes
-            P = P_allNodes ./ sum(P_allNodes);
-               
+            P_allNodes(toursFound) = 0
+            P = P_allNodes ./ sum(P_allNodes)
+            if isnan(P)
+                break
+            else
+            end
             nextNode = rouletteWheel(P); 
             colony(droneNo).ant(i).tour = [  colony(droneNo).ant(i).tour , nextNode ];
             colony(droneNo).ant(i).fires = [ colony(droneNo).ant(i).fires, fireIntensity(nextNode)];
