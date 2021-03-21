@@ -1,5 +1,5 @@
 function [fires] = createFires()
-    t = table2cell(readtable('../data-manipulation/southpuget-samples.xlsx', 'sheet', 'Sheet1'));
+    t = table2cell(readtable('../data-manipulation/northeast-samples.xlsx', 'sheet', 'Sheet1'));
     %convert from cell to array and transpose it (')
     fires.intensity = cell2mat(t(:, 8))'; 
     %[1 1 1 2 2 2 3 3 3 4 4 4 5 5 5];

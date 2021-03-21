@@ -6,7 +6,7 @@ function [drones] = createDrones(fires, droneNo)
     %[3 6 9 12 15];
     drones.locX = zeros(1, droneNo);
     for i = 1: droneNo
-        drones.locX(i) = 0 + (max(fires.locX) - 0) / droneNo * i;
+        drones.locX(i) = min(fires.locX) + (max(fires.locX) - min(fires.locX)) / droneNo * i;
     end
     %drones.locX = [0 5 10 15 20];
     

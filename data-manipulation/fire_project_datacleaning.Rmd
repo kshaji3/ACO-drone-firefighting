@@ -89,7 +89,7 @@ Generate samples of the northeast dataset and store them in an excel file
 ```{r}
 excel_name <-  "northeast-samples.xlsx"
 num_tables <- 10
-num_rows <- 10
+num_rows <- 30
 generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northeast)
 ```
@@ -107,7 +107,7 @@ wadnr_northwest$relative_x_coord <- relativize_x_coordinate(wadnr_northwest)
 wadnr_northwest$relative_y_coord <- relativize_y_coordinate(wadnr_northwest)
 ```
 
-Create samples of 10 rows of northwest datapoints, and store them in excel sheets.
+Create samples of 30 rows of northwest datapoints, and store them in excel sheets.
 
 ```{r}
 excel_name <-  "northwest-samples.xlsx"
@@ -127,7 +127,7 @@ wadnr_southeast$relative_x_coord <- relativize_x_coordinate(wadnr_southeast)
 wadnr_southeast$relative_y_coord <- relativize_y_coordinate(wadnr_southeast)
 ```
 
-Create samples of 10 rows of southeast datapoints, and store them in excel sheets
+Create samples of 30 rows of southeast datapoints, and store them in excel sheets
 
 ```{r}
 excel_name <-  "southeast-samples.xlsx"
@@ -148,7 +148,7 @@ wadnr_southpuget$relative_x_coord <- relativize_x_coordinate(wadnr_southpuget)
 wadnr_southpuget$relative_y_coord <- relativize_y_coordinate(wadnr_southpuget)
 ```
 
-Create samples of 10 rows of south puget datapoints, and store them in excel sheets
+Create samples of 30 rows of south puget datapoints, and store them in excel sheets
 
 ```{r}
 excel_name <-  "southpuget-samples.xlsx"
@@ -168,7 +168,7 @@ wadnr_pascascades$relative_x_coord <- relativize_x_coordinate(wadnr_pascascades)
 wadnr_pascascades$relative_y_coord <- relativize_y_coordinate(wadnr_pascascades)
 ```
 
-Create samples of 10 rows of Pacific Cascade fires, and store them in excel sheets
+Create samples of 30 rows of Pacific Cascade fires, and store them in excel sheets
 
 ```{r}
 excel_name <-  "pascascades-samples.xlsx"
