@@ -48,7 +48,7 @@ t = 1;
 allUsedNodes = [];
 bestSolutionsFound = zeros(1, droneNo) %check if best solutions are found
 % && bestOverallFitness ~= (0.01 * droneNo)
-actualNumberDronesUsed = 1;
+actualNumberDronesUsed = 0;
 for d = 1: droneNo
 
     tempFitness = 0;

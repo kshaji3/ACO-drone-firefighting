@@ -12,7 +12,7 @@ function [drones] = createDrones(fires, droneNo)
     
     drones.locY = zeros(1, droneNo);
     for i = 1: droneNo
-        drones.locY(i) = min(fires.locY) - 2;
+        drones.locY(i) = min(fires.locY) - 0.25;
     end
     %drones.locY = [0 0 0 0 0];
 end
