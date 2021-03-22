@@ -5,6 +5,8 @@ clc
 fires = createFires();
 droneNo = 5; %agents in CVRP
 [drones] = createDrones(fires, droneNo);
+netFireSum = sum(fires.intensity);
+netDroneExtSum = sum(drones.capac);
 
 %Create the graph
 [graph] = createGraph(fires.locX, fires.locY);
@@ -17,7 +19,7 @@ subplot(2, 4, 2);
 drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
-maxIter = 20; %1
+maxIter = 10; %1
 antNo = 50; %5
 
 tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
