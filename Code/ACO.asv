@@ -146,11 +146,11 @@ for i = 1: length(allUnusedNodes)
         if (uIntensity(1, i) - colony(droneNumber).queen.fireTotDiff >= 0)    
             uIntensity(1, i) = uIntensity(1, i) - colony(droneNumber).queen.fireTotDiff;
             colony(droneNumber).queen.tour = [colony(droneNumber).queen.tour, allUnusedNodes(1, i)];
-            bestTour{droneNumber} = [bestTour{droneNumber}, allUnusedNodes(1, i) + colony(droneNumber).queen.fireTotDiff / fires.intensity(allUnusedNodes(1, i))];
+            bestTour{droneNumber} = [bestTour{droneNumber}, colony(droneNumber).queen.fireTotDiff / fires.intensity(allUnusedNodes(1, i))];
             colony(droneNumber).queen.fireTotDiff = 0;
             droneNumber = droneNumber + 1;
         else
-            bestTour{droneNumber} = [bestTour{droneNumber}, allUnusedNodes(1, i) + colony(droneNumber).queen.fireTotDiff / fires.intensity(allUnusedNodes(1, i))];
+            bestTour{droneNumber} = [bestTour{droneNumber}, colony(droneNumber).queen.fireTotDiff / fires.intensity(allUnusedNodes(1, i))];
             colony(droneNumber).queen.fireTotDiff = colony(droneNumber).queen.fireTotDiff - uIntensity(1, i);
             uIntensity(1, i) = 0;
             colony(droneNumber).queen.tour = [colony(droneNumber).queen.tour, allUnusedNodes(1, i)];

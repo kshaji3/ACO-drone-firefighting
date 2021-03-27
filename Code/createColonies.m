@@ -43,7 +43,7 @@ function [ colony ] = createColonies( iterationNum, graph, fireIntensity, droneC
 %             colony(droneNo).ant(i).tour(j) = [];
 %             colony(droneNo).ant(i).fires(j) = [];
 %         end
-        if droneCapac < colony(droneNo).ant(i).fireSum && length(colony(droneNo).ant(i).tour) > 1
+        if droneCapac < colony(droneNo).ant(i).fireSum %&& length(colony(droneNo).ant(i).tour) > 1
             colony(droneNo).ant(i).fireSum = [colony(droneNo).ant(i).fireSum - fireIntensity(colony(droneNo).ant(i).tour(j-1))];
             colony(droneNo).ant(i).fires(j - 1) = [];
             colony(droneNo).ant(i).tour(j - 1) = [];
