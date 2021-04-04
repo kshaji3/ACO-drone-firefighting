@@ -32,6 +32,12 @@ Create a new dataframe with all the fires that have burned less than 50 acres:
 wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 50)
 head(wadnr_under_x)
 ```
+Remove rows which have an elevation value of zero
+```{r}
+wadnr_under_x <- subset(wadnr_under_x, SITE_ELEV != "<Null>")
+wadnr_under_x$SITE_ELEV <- as.numeric(as.character(wadnr_under_x$SITE_ELEV))
+```
+
 
 Function for creation of random samples of dataframes based on region. This function also deletes existing version(s) of the excel file it intends to create. This way the program does not ever result in excel-files with over 10 sheets.
 
