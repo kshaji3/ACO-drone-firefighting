@@ -7,5 +7,5 @@ function [fires] = createFires()
     %[0 0 0 5 5 5 10 10 10 15 15 15 20 20 20];
     fires.locY = cell2mat(t(:, 16))' ./ (10^5);
     %[5 10 15 5 10 15 5 10 15 5 10 15 5 10 15];
-%     fires.locZ = cell2mat(t(:, 
+    fires.locZ = cell2mat(t(:, 6))';
 end

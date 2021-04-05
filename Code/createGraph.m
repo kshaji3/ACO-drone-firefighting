@@ -1,12 +1,15 @@
-function [graph] = createGraph(fireLocX, fireLocY)
+function [graph] = createGraph(fireLocX, fireLocY, fireLocZ)
     %create the CONSTRUCTION GRAPH
     graph.n = length(fireLocX);
     x = fireLocX;
     y = fireLocY;
+    z = fireLocZ;
     for i = 1: graph.n
         graph.node(i).x = x(i);
         graph.node(i).y = y(i);
+        graph.node(i).z = z(i);
     end
+    %need to incorporate the z-element further here
     graph.edges = zeros(graph.n, graph.n);
     for i = 1: graph.n
         for j = 1: graph.n

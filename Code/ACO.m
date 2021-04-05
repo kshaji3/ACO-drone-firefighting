@@ -9,7 +9,7 @@ netFireSum = sum(fires.intensity);
 netDroneExtSum = sum(drones.capac);
 
 %Create the graph
-[graph] = createGraph(fires.locX, fires.locY);
+[graph] = createGraph(fires.locX, fires.locY, fires.locZ);
 
 %Draw the graph
 figure

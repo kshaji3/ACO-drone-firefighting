@@ -32,7 +32,7 @@ Create a new dataframe with all the fires that have burned less than 50 acres:
 wadnr_under_x <- cleaned_wadnr_data %>% subset(ACRES_BURNED < 50)
 head(wadnr_under_x)
 ```
-Remove rows which have an elevation value of zero
+Remove rows which have an elevation value of zero and convert that row into a numerical data type.
 ```{r}
 wadnr_under_x <- subset(wadnr_under_x, SITE_ELEV != "<Null>")
 wadnr_under_x$SITE_ELEV <- as.numeric(as.character(wadnr_under_x$SITE_ELEV))
