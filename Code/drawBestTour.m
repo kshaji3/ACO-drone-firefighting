@@ -1,13 +1,13 @@
 function [ ] = drawBestTour(colony , drones, droneNo, graph)
     queenTour = colony.queen.tour;
-    hold on
 
     for i = 1 : graph.n
     
         X = [graph.node(:).x];
         Y = [graph.node(:).y];
-    
-        plot(X, Y, 'ok', 'markerSize' , 10 , 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor', [1, 0.6, 0.6]);
+        Z = [graph.node(:).z];
+        plot3(X, Y, Z, 'ok', 'markerSize' , 10 , 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor', [1, 0.6, 0.6]);
+        hold on
     end
     
     color = [0.1 * droneNo, 0.5, 0.5];
@@ -17,17 +17,20 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
     
         x1 = drones.locX(droneNo);
         y1 = drones.locY(droneNo);
+        z1 = drones.locZ(droneNo);
     
         x2 = graph.node(nextNode).x;
         y2 = graph.node(nextNode).y;
+        z2 = graph.node(nextNode).z;
     
         X = [x1 , x2];
         Y = [y1, y2];
+        Z = [z1, z2];
 %         currentNode = queenTour(1);
 %     
 %         x1 = graph.node(currentNode).x;
 %         y1 = graph.node(currentNode).y;
-        plot (X, Y, 'color', color);
+        plot3(X, Y, Z, 'color', color);
         
         for i = 1 : length(queenTour) - 1
     
@@ -36,13 +39,16 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
     
             x1 = graph.node(currentNode).x;
             y1 = graph.node(currentNode).y;
+            z1 = graph.node(currentNode).z;
     
             x2 = graph.node(nextNode).x;
             y2 = graph.node(nextNode).y;
+            z2 = graph.node(nextNode).z;
     
             X = [x1 , x2];
             Y = [y1, y2];
-            plot (X, Y, 'color', color);
+            Z = [z1, z2];
+            plot3(X, Y, Z, 'color', color);
 
         end
     else
@@ -50,7 +56,8 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
     for i = 1: length(drones.locX)
         X = [drones.locX(i)];
         Y = [drones.locY(i)];
-        plot(X,Y, 'ok', 'MarkerSize', 6, 'MarkerEdgeColor' , 'blue' , 'MarkerFaceColor' , 'blue');
+        Z = [drones.locZ(i)];
+        plot3(X,Y, Z, 'ok', 'MarkerSize', 6, 'MarkerEdgeColor' , 'blue' , 'MarkerFaceColor' , 'blue');
     end
     box('on');
 end
