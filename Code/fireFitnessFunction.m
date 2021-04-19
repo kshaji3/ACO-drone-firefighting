@@ -5,8 +5,8 @@ function [ fireFitness, fireTotDiffFit, fireEqFit, fireIntFit ] = fireFitnessFun
         fireEqFit = 10000;
         fireIntFit = 10000;
     else
-        fireTotDiffFit = 0.01 + fireSumFitness(droneCapac, ant.fireSum);
-        fireFitness = fireTotDiffFit;
+        fireTotDiffFit = fireSumFitness(droneCapac, ant.fireSum);
+        fireFitness = 0.01 + fireTotDiffFit;
         iDronePerFire = totalFires / totalDrones; %ideal drones per fire
         fireEqFit = fireEqFitness(iDronePerFire, length(ant.fires));
         fireFitness = fireFitness + fireEqFit;

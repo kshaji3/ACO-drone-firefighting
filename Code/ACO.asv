@@ -136,7 +136,7 @@ for d = 1: droneNo
     end
 end
 
-%% Cooperative Search Part to Target Untargetted Fires
+
 allUnusedNodes = zeros(1, length(fires.intensity) - length(allUsedNodes));
 uCounter = 1;
 actualNumberDronesUsed = length(bestTour);
@@ -152,15 +152,17 @@ uIntensity = zeros(1, length(allUnusedNodes));
 for i = 1: length(allUnusedNodes)
     uIntensity(1, i) = fires.intensity(allUnusedNodes(1, i));
 end
-
+%reroute to fight fires that exceed current drone capacities, so add a
+%cooperative element to solving the problem
+%bug somewhere here
 
 for i = 1: length(allUnusedNodes)
     while (~(droneNumber > droneNo) && uIntensity(1, i) ~= 0)
-        %drones with no fire extinguisher are not rerouted
         if (colony(droneNumber).queen.fireTotDiff <= 0.000000001)
             droneNumber = droneNumber + 1;
         elseif (uIntensity(1, i) - colony(droneNumber).queen.fireTotDiff >= 0)    
             uIntensity(1, i) = uIntensity(1, i) - colony(droneNumber).queen.fireTotDiff;
+            %0.01 accounts for the fact that a passive 
             colony(droneNumber).queen.tour = [colony(droneNumber).queen.tour, allUnusedNodes(1, i)];
             bestTour{droneNumber} = [bestTour{droneNumber}, allUnusedNodes(1, i) + colony(droneNumber).queen.fireTotDiff / fires.intensity(allUnusedNodes(1, i))];
             colony(droneNumber).queen.fireTotDiff = 0;
@@ -177,24 +179,19 @@ subplot(2, 4, 4)
 saveas(fig1, 'control-trial1-tours.png','png');
 
 
-%% Graph the Best Tour as a separate figure
 
 %graph best tours
 fig2 = figure('Position', get(0, 'Screensize'));
-
-%Graph best tours for all drones that were used
 for d = 1: actualNumberDronesUsed
     drawBestTour(colony(d), drones, d, graph);
     bestOverallFitness(1, d) = colony(d).queen.fireFitness;
 end
-title('Best Overall Tour of All Iterations')
-saveas(fig2, 'control-trial1-best-tour.png','png');
 
-%% Format data output and store as excel files
-
-%Convert to tables so we can set labels for row and columns
+%format data output, first convert to tables
 tourTable = cell2table(bestTour); %formatted well enough as is
 droneIntensityTable = array2table(drones.capac);
 fireIntensityTable = array2table(fires.intensity);
 
+title('Best Overall Tour of All Iterations')
+saveas(fig2, 'control-trial1-best-tour.png','png');
 filename = 'trial1data.xlsx';

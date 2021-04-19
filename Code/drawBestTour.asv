@@ -3,11 +3,12 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
 
     for i = 1 : graph.n
     
-        X = [graph.node(i).x];
-        Y = [graph.node(i).y];
-        Z = [graph.node(i).z];
-        plot3(X, Y, Z, 'ok', 'markerSize' , 10 , 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor', [1, 0.6, 0.6]);;
-        text(X, Y, Z, num2str(i));
+        X = [graph.node(:).x];
+        Y = [graph.node(:).y];
+        Z = [graph.node(:).z];
+        plot3(X, Y, Z, 'ok', 'markerSize' , 10 , 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor', [1, 0.6, 0.6]);
+        k = num2str(i);
+        text(X, Y, Z, k);
         hold on
     end
     
