@@ -1,4 +1,6 @@
 function [ distFitness ] = distFitnessFunction ( drones, droneNo, tour , graph)
+    %calculate the distances, this is mostly a value taken for just
+    %process, and not really used anywhere in the algorithm
     if (length(tour) == 0)
         distFitness = 0;
     else

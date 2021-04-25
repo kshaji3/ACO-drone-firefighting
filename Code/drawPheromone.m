@@ -20,7 +20,10 @@ for i = 1 : graph.n -1
         Z = [z1, z2];
         
         tau(i , j);
- 
+        if (tau(i, j) > 1)
+            tau(i, j) = 1;
+        else
+        end
         plot3(X,Y, Z, 'color' , [0, 0, (1-tau_normalized(i,j)),  tau_normalized(i,j)] , 'lineWidth', 10.*tau_normalized(i,j) + 1)
  
     end

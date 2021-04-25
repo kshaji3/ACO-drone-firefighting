@@ -1,6 +1,7 @@
-function [ ] = drawBestTour(colony , drones, droneNo, graph)
+function [ ] = drawBestTour(colony , drones, droneNo, graph) %draw the best tour
     queenTour = colony.queen.tour;
-
+    
+    %graph nodes
     for i = 1 : graph.n
     
         X = [graph.node(i).x];
@@ -11,6 +12,7 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
         hold on
     end
     
+    %different colors for each drone
     color = [mod(0.77 * droneNo, 1), 0.5, 0.5];
     
     if (length(queenTour) >= 1)
@@ -27,10 +29,6 @@ function [ ] = drawBestTour(colony , drones, droneNo, graph)
         X = [x1 , x2];
         Y = [y1, y2];
         Z = [z1, z2];
-%         currentNode = queenTour(1);
-%     
-%         x1 = graph.node(currentNode).x;
-%         y1 = graph.node(currentNode).y;
         plot3(X, Y, Z, 'color', color, 'LineWidth', 1 + (droneNo * 0.2));
         
         for i = 1 : length(queenTour) - 1

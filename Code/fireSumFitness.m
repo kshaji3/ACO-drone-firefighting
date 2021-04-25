@@ -1,4 +1,6 @@
 function [fireSumFitness] = fireSumFitness (droneCapac, fireSum)
+   %difference between total amount of drone capacity vs. fires
+   %extinguished's fire retardant requirements
    fireSumFitness = (abs(droneCapac - fireSum))^1;
         
 
