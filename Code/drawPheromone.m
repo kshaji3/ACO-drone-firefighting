@@ -3,7 +3,11 @@ function [ ] = drawPheromone(tau , graph)
 maxTau = max(tau(:));
 minTau = min(tau(:));
 
-tau_normalized = (tau - minTau) ./ (maxTau - minTau);
+if (maxTau - minTau == 0)
+    tau_normalized = (tau - minTau)
+else
+    tau_normalized = (tau - minTau) ./ (maxTau - minTau);
+end
 
 for i = 1 : graph.n -1 
     for j = i+1 : graph.n

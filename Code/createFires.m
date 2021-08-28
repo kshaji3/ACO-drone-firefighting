@@ -1,5 +1,5 @@
 function [fires] = createFires() %get fire values
-    t = table2cell(readtable('../data-manipulation/southpuget-samples.xlsx', 'sheet', 'Sheet9'));
+    t = table2cell(readtable('../data-manipulation/pascascades-samples.xlsx', 'sheet', 'Sheet9'));
     %convert from cell to array and transpose it (')
     fires.intensity = cell2mat(t(:, 8))'; 
     %all the values are by default raised to 10^5 (due to actual distances), 
