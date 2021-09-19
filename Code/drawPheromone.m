@@ -4,7 +4,7 @@ maxTau = max(tau(:));
 minTau = min(tau(:));
 
 if (maxTau - minTau == 0)
-    tau_normalized = (tau - minTau)
+    tau_normalized = (tau - minTau);
 else
     tau_normalized = (tau - minTau) ./ (maxTau - minTau);
 end

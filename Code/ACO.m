@@ -2,10 +2,20 @@ clear all
 close all
 clc
 tic; %start the program timer
+
+%% Set File Names
+fireDatasheet = '../data-manipulation/southpuget-samples.xlsx';
+sheetName = 'sheet9';
+trialName = 'trial10';
+regionName = 'southpuget';
+outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');
+outputToursName = strcat(trialName, '-', regionName, '-', 'tours', '.png');
+outputBestToursName = strcat(trialName, '-', regionName, '-', 'best-tour', '.png');
+
 %% Problem Preparation
 %get the fires and drones
 
-environment.fires = createFires();
+environment.fires = createFires(fireDatasheet, sheetName);
 droneNo = 5; %agents in CVRP
 [drones] = createDrones(environment.fires, droneNo);
 environment.netFireSum = sum(environment.fires.intensity);
@@ -52,7 +62,9 @@ bestTour = {};
 drones.colony = [];
 drones.bestOverallFitness = zeros(1, droneNo); %datapoint that shows overall how ideal the whole solution is
 drones.allUsedNodes = []; %keeps track of all the nodes that are visited
-drones.bestSolutionsFound = zeros(1, droneNo) %check if best solutions are found
+drones.bestSolutionsFound = zeros(1, droneNo); %check if best solutions are found
+
+
 
 %% Main Loop of ACO
 
@@ -200,7 +212,7 @@ for i = 1: length(drones.allUnusedNodes)
     end
 end
 subplot(2, 4, 4)
-timeElapsed = toc
+timeElapsed = toc;
 
 
 %% Graph the Best Tour as a separate figure
@@ -211,7 +223,7 @@ graphFigures.fig2 = figure('Position', get(0, 'Screensize'));
 %Graph best tours for all drones that were used
 for d = 1: drones.actualNumberDronesUsed
     drawBestTour(drones.colony(d), drones, d, graph);
-    bestOverallFitness(1, d) = drones.colony(d).queen.fireFitness;
+    drones.bestOverallFitness(1, d) = drones.colony(d).queen.fireFitness;
 end
 title('Best Overall Tour of All Iterations')
 
@@ -238,8 +250,8 @@ end
 outputTable.fireIntensityTable = array2table(environment.fires.intensity, 'VariableNames', outputTable.fireColNames);
 outputTable.rowName = "Time Elapsed";
 outputTable.timeElapsedTable = array2table(timeElapsed, 'RowNames', outputTable.rowName);
-outputTable.fileName = 'southpuget-trial-data.xlsx';
-outputTable.sheetName = 'trial5';
+outputTable.fileName = outputExcelName;
+outputTable.sheetName = trialName;
 
 writetable(outputTable.tourTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A1');
 writetable(outputTable.droneIntensityTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A4');
@@ -248,6 +260,6 @@ writetable(outputTable.fireIntensityTable,outputTable.fileName,'Sheet', outputTa
 writetable(outputTable.timeElapsedTable, outputTable.fileName, 'Sheet', outputTable.sheetName, 'Range', 'A13');
 
 %save the figures used as png files in the project folder
-saveas(graphFigures.fig1, 'southpuget-trial5-tours.png','png');
-saveas(graphFigures.fig2, 'southpuget-trial5-best-tour.png','png');
+saveas(graphFigures.fig1, outputToursName,'png');
+saveas(graphFigures.fig2, outputBestToursName,'png');
 
