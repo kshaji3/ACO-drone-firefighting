@@ -31,7 +31,7 @@ for i = 1 : graph.n
     plot3(X,Y, Z, 'ok', 'MarkerSize', 10, 'MarkerEdgeColor' , 'r' , 'MarkerFaceColor' , [ 1, 0.6 , 0.6]);
 end
 
-title ('Al nodes and edges')
+title ('All nodes and edges')
 box('on')
 
 end

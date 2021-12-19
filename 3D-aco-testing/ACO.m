@@ -16,16 +16,16 @@ drawGraph( graph);
 %% ACO algorithm 
 
 %% Initial parameters of ACO 
-maxIter = 50;
+maxIter = 10;
 antNo = 10;
 
 tau0 = 10 * 1 / (  graph.n * mean( graph.edges(:)  )  );  % Initial phromone concentration
 
-tau = tau0 * ones( graph.n , graph.n); % Phromone matirx 
+tau = tau0 * ones( graph.n , graph.n); % Pheromone matirx 
 eta = 1./ graph.edges;  % desirability of each edge 
 
 rho = 0.5; % Evaporation rate 
-alpha = 1;  % Phromone exponential parameters 
+alpha = 1;  % Pheromone exponential parameters 
 beta = 1;  % Desirability exponetial paramter
 
 
@@ -56,7 +56,7 @@ for t = 1 : maxIter
     colony.queen.tour = bestTour;
     colony.queen.fitness = bestFitness;
         
-    % Update phromone matrix 
+    % Update pheromone matrix 
     tau = updatePhromone( tau , colony );  
     
     % Evaporation 
