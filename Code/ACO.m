@@ -72,10 +72,11 @@ drones.bestSolutionsFound = zeros(1, droneNo); %check if best solutions are foun
 t = 1; %fenceposting
 
 for d = 1: droneNo
-
+    ljmdfsadfk = 90;
     %create ants
     while t <= environment.maxIter && drones.bestSolutionsFound(d) ~= 1
-        drones.colony = createColonies(t, graph, environment.fires.intensity, drones.capac(d), d, drones.colony, drones.antNo, drones.tau(:,:,d), graph.eta, environment.alpha, environment.beta, drones.allUsedNodes);
+        drones.colony = createColonies(t, graph, environment.fires.intensity, drones.capac(d), ...
+            d, drones.colony, drones.antNo, drones.tau(:,:,d), graph.eta, environment.alpha, environment.beta, drones.allUsedNodes);
         for k = 1: drones.antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
             drones.colony(d).ant(k).distFitness = distFitnessFunction(drones, d, drones.colony(d).ant(k).tour,  graph);
@@ -85,7 +86,7 @@ for d = 1: droneNo
             drones.colony(d).ant(k).fireFitness = fireOverall;
             drones.colony(d).ant(k).fireTotDiff = fireFit1;
             drones.colony(d).ant(k).fireEq = fireFit2;
-            drones. colony(d).ant(k).fireInt = fireFit3;
+            drones.colony(d).ant(k).fireInt = fireFit3;
         end
         
         %check if any of the ants offer a better solution than the ones
