@@ -1,4 +1,4 @@
-function [time] = aco3(graph, environment, droneNo, antNo, indVert, indHoriz)
+function [time] = aco3(graph, environment, droneNo, antNo, indVert, indHoriz, rho)
 
 
 %% Problem Preparation
@@ -17,7 +17,7 @@ for t = 1: droneNo - 1
     drones.tau(:,:,t + 1) = drones.tau0 * ones(graph.n, graph.n);
 end
 
-environment.rho = 0.5; % Evaporation rate 
+environment.rho = rho; % Evaporation rate 
 environment.alpha = 1;  % Pheromone exponential parameters 
 environment.beta = 1;  % Desirability exponetial parameter
 

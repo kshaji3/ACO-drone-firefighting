@@ -43,7 +43,8 @@ for i = 1: iterations
     end
     for j = 1: length(regionNames)
         for k = 1: numTrialsPerRegion
-            time(j, k) = aco3(graph{j, k}, environment, droneNo, 10 * i, j, k);
+            rho = 1 * (i + 2) / 10;
+            time(j, k) = aco3(graph{j, k}, environment, droneNo, 10, j, k, rho);
         end
     end
     tavg{i} = mean(time(:));
