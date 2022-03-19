@@ -3,11 +3,11 @@ function [ graph ]  = createGraph()
 % x = [ 0.09 , 0.16 , 0.84 , 0.70 ];
 % y = [0.17,   0.52,  0.92, 0.16];
 % 
- 
-% 14 nodes
-% x = [0 0 5 5 10 10 15 15 20 20];
-% y = [5 10 5 10 5 10 5 10 5 10];
-% z = [5 5 10 10 15 15 20 20 25 25];
+
+numberOfCities = 80;
+x = rand(1, numberOfCities) * 100;
+y = rand(1, numberOfCities) * 100;
+z = rand(1, numberOfCities) * 100;
 
  
 %     % 50 nodes
