@@ -4,7 +4,7 @@ close all;
 %prompt = 'What is the number of cities in this TSP program? ';
 %numberOfCities = input(prompt);
 global gNumber;
-numberOfCities = 80;
+numberOfCities = 100;
 popSize = 100;
 tStart = tic;
 
