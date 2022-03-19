@@ -1,11 +1,11 @@
 clear;
 clc;
+close all;
 %prompt = 'What is the number of cities in this TSP program? ';
 %numberOfCities = input(prompt);
 global gNumber;
 numberOfCities = 80;
-prompt = 'What is the number of population size? ';
-popSize = input(prompt);
+popSize = 100;
 tStart = tic;
 
 bestPathSoFar = Inf; 

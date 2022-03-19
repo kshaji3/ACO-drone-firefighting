@@ -6,7 +6,7 @@ function [ distances ] = calculateDistance( cities )
 
     for i=1:col;
         for j=1:col;
-            distances(i,j)= distances(i,j)+ sqrt( (cities(1,i)-cities(1,j))^2 + (cities(2,i)-cities(2,j))^2  );           
+            distances(i,j)= distances(i,j)+ sqrt( (cities(1,i)-cities(1,j))^2 + (cities(2,i)-cities(2,j))^2 + (cities(3, i) - cities(3, j))^2 );           
         end
     end
 end
