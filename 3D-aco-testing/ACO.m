@@ -16,7 +16,7 @@ drawGraph( graph);
 %% ACO algorithm 
 
 %% Initial parameters of ACO 
-maxIter = 500;
+maxIter = 50;
 antNo = 10;
 
 tau0 = 10 * 1 / (  graph.n * mean( graph.edges(:)  )  );  % Initial phromone concentration
@@ -74,8 +74,8 @@ for t = 1 : maxIter
     drawBestTour( colony, graph );
     
     
-    subplot(1,3,3)
-    cla
+%     subplot(1,3,3)
+%     cla
 %     drawPhromone( tau , graph );
    
    drawnow
