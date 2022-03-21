@@ -72,7 +72,6 @@ drones.bestSolutionsFound = zeros(1, droneNo); %check if best solutions are foun
 t = 1; %fenceposting
 
 for d = 1: droneNo
-    ljmdfsadfk = 90;
     %create ants
     while t <= environment.maxIter && drones.bestSolutionsFound(d) ~= 1
         drones.colony = createColonies(t, graph, environment.fires.intensity, drones.capac(d), ...

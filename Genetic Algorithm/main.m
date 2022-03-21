@@ -13,28 +13,34 @@ outputToursName = strcat(trialName, '-', regionName, '-', 'tours', '.png');
 outputBestToursName = strcat(trialName, '-', regionName, '-', 'best-tour', '.png');
 
 %% Problem Preparation
-popSize = 100;
+
 tStart = tic;
-droneNo = 5;
+droneNum = 5;
 environment.fires = generateCities(fireDatasheet, sheetName);
-[drones] = createDrones(environment.fires, droneNo);
+[drones] = createDrones(environment.fires, droneNum);
 environment.netFireSum = sum(environment.fires.intensity);
 drones.netDroneExtSum = sum(drones.capac);
 bestPathSoFar = Inf; 
 
-% Generation cities on random locations.
-
+%% Initial Parameters
 % Calculating distances between cities according to created city locations.
 distances = calculateDistance(environment.fires.loc);
-
-% Generate population with random pathes.
-pop = population(numberOfCities, popSize);
-nextGeneration = zeros(popSize,numberOfCities);
-
-% Setting values for genetic algorithm.
+drones.popSize = 100;
+drones.crossoverProbability = 0.9;
+drones.mutationProbability = 0.05;
 generationNumber = 500;
-crossoverProbabilty = 0.9;
-mutationProbabilty = 0.05;
+drones.cluster = [];
+drones.allUsedNodes = [];
+
+for d = 1: droneNum
+    % Generate population with random pathes.
+    drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
+        , d, drones.capac(d), drones.cluster);
+    nextGeneration = zeros(popSize,numberOfCities);
+end
+
+
+
 
 %Keeping track of minimum pathes through every iteration.
 minPathes = zeros(generationNumber,1);
