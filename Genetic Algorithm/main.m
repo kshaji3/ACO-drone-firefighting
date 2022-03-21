@@ -1,20 +1,31 @@
 clear;
 clc;
 close all;
-%prompt = 'What is the number of cities in this TSP program? ';
-%numberOfCities = input(prompt);
 global gNumber;
-numberOfCities = 100;
+
+%% Set file names
+fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
+sheetName = 'sheet9';
+trialName = 'trial1';
+regionName = 'northeast';
+outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');
+outputToursName = strcat(trialName, '-', regionName, '-', 'tours', '.png');
+outputBestToursName = strcat(trialName, '-', regionName, '-', 'best-tour', '.png');
+
+%% Problem Preparation
 popSize = 100;
 tStart = tic;
-
+droneNo = 5;
+environment.fires = generateCities(fireDatasheet, sheetName);
+[drones] = createDrones(environment.fires, droneNo);
+environment.netFireSum = sum(environment.fires.intensity);
+drones.netDroneExtSum = sum(drones.capac);
 bestPathSoFar = Inf; 
 
 % Generation cities on random locations.
-cities = generateCities(numberOfCities, 100);
 
 % Calculating distances between cities according to created city locations.
-distances = calculateDistance(cities);
+distances = calculateDistance(environment.fires.loc);
 
 % Generate population with random pathes.
 pop = population(numberOfCities, popSize);
