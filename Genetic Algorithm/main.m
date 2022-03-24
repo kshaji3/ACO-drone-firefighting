@@ -33,7 +33,7 @@ drones.cluster = [];
 drones.allUsedNodes = [];
 
 for d = 1: droneNum
-    % Generate population with random pathes.
+    % Generate population with random paths.
     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
         , d, drones.capac(d), drones.cluster);
     nextGeneration = zeros(popSize,numberOfCities);
