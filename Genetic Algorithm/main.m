@@ -36,16 +36,25 @@ for d = 1: droneNum
     % Generate population with random paths.
     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
         , d, drones.capac(d), drones.cluster);
-    nextGeneration = zeros(popSize,numberOfCities);
+    %nextGeneration = zeros(popSize,numberOfCities);
 end
 
 
 
 
-%Keeping track of minimum pathes through every iteration.
-minPathes = zeros(generationNumber,1);
+%Keeping track of minimum paths through every iteration.
+%minPathes = zeros(generationNumber,1);
 
 % Genetic algorithm itself.
+for d = 1: droneNum 
+    for i = 1: generationNumber
+        for k = 1: drones.popSize
+            drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...
+                drones.cluster(d).pop(k), drones.capac(d), droneNum, ...
+                length(environment.fires.intensity));
+        end
+    end
+end
 for  gN=1:generationNumber;
 
     % Calculate fitnesses for the pathes total distances.
