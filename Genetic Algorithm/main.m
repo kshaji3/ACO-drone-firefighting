@@ -53,6 +53,11 @@ for d = 1: droneNum
                 drones.cluster(d).pop(k), drones.capac(d), droneNum, ...
                 length(environment.fires.intensity));
         end
+        tournamentSize=4;
+        for k=1: drones.popSize;
+            % Choosing parents for crossover operation bu using tournament approach.
+            tournamentPopFitnesses=zeros( tournamentSize,1);
+        end
     end
 end
 for  gN=1:generationNumber;
@@ -62,11 +67,11 @@ for  gN=1:generationNumber;
 
     %tournamentSize = int32(popSize *0.2);
     tournamentSize=4;
-    for k=1:popSize;
+    for k = 1:drones.popSize;
         % Choosing parents for crossover operation bu using tournament approach.
         tournamentPopDistances=zeros( tournamentSize,1);
         for i=1:tournamentSize;
-            randomRow = randi(popSize);
+            randomRow = randi(drones.popSize);
             tournamentPopDistances(i,1) = totalDistances(randomRow,1);
         end
 
