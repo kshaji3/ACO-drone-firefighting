@@ -54,9 +54,13 @@ for d = 1: droneNum
                 length(environment.fires.intensity));
         end
         tournamentSize=4;
-        for k=1: drones.popSize;
+        for k=1: drones.popSize
             % Choosing parents for crossover operation bu using tournament approach.
             tournamentPopFitnesses=zeros( tournamentSize,1);
+            for j = 1:tournamentSize
+                randomRow = randi(drones.popSize);
+                tournamentPopDistances(i,1) = totalPopFitnesses(randomRow,1);
+            end
         end
     end
 end
