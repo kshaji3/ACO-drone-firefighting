@@ -59,8 +59,9 @@ for d = 1: droneNum
             tournamentPopFitnesses=zeros( tournamentSize,1);
             for j = 1:tournamentSize
                 randomRow = randi(drones.popSize);
-                tournamentPopDistances(i,1) = totalPopFitnesses(randomRow,1);
+                tournamentPopFitnesses(j,1) = drones.cluster(d).pop(randomRow).firefitness;
             end
+            parent1  = min(tournamentPopFitnesses);
         end
     end
 end
