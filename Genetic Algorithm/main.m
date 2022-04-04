@@ -59,9 +59,12 @@ for d = 1: droneNum
             tournamentPopFitnesses=zeros( tournamentSize,1);
             for j = 1:tournamentSize
                 randomRow = randi(drones.popSize);
-                tournamentPopFitnesses(j,1) = drones.cluster(d).pop(randomRow).firefitness;
+                tournamentPopFitnesses(j,1) = drones.cluster(d).pop(randomRow).fireFitness;
             end
             parent1  = min(tournamentPopFitnesses);
+            [parent1X,parent1Y] = find(drones.cluster(d).pop.fireFitness == parent1,1, ...
+                'first');
+            parent1Path = pop(parent1X(1,1),:);
         end
     end
 end
