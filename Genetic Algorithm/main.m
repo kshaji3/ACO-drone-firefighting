@@ -83,7 +83,8 @@ for d = 1: droneNum
             [parent2X,parent2Y] = find(tempStorage.fireFitness == parent2, 1,...
                 'first');
             parent2Path = drones.cluster(d).pop(parent2X).tour;
-            childPath = crossover(parent1Path, parent2Path, drones.crossoverProbability);
+            childPath = crossover(parent1Path, parent2Path, drones.crossoverProbability, ...
+                drones, environment, d);
             childPath = mutate(childPath, drones.mutationProbability);
         end
     end
