@@ -4,11 +4,11 @@ function [ childPath ] = crossover( parent1Path, parent2Path, prob )
     random = rand();
     if prob >= random;
         [l, length] = size(parent1Path);
-        childPath = zeros(l,length);
-        setSize = int8(length/2) -1;
+%         childPath = zeros(l,length);
+        setSize = int8(length/2);
         offset = randi(setSize);
 
-        for i=offset:setSize+offset-1;
+        for i = offset : setSize + offset - 1
             childPath(1,i) = parent1Path(1,i);
         end
         iterator = i+1;
