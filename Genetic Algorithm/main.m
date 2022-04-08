@@ -62,9 +62,15 @@ for d = 1: droneNum
                 tournamentPopFitnesses(j,1) = drones.cluster(d).pop(randomRow).fireFitness;
             end
             parent1  = min(tournamentPopFitnesses);
-            [parent1X,parent1Y] = find(drones.cluster(d).pop.fireFitness == parent1,1, ...
+            
+            %following line necessary as the array of structures isn't
+            %conducive to the find command
+            tempStorage = struct2table(drones.cluster(d).pop)
+            [parent1X,parent1Y] = find(tempStorage.fireFitness == parent1, 1,...
                 'first');
-            parent1Path = pop(parent1X(1,1),:);
+            
+            parent1Path = drones.cluster(d).pop(parent1X).tour;
+            x = 9;
         end
     end
 end
