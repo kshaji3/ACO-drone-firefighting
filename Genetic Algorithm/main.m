@@ -31,13 +31,13 @@ drones.mutationProbability = 0.05;
 generationNumber = 100;
 drones.cluster = [];
 drones.allUsedNodes = [];
-
-for d = 1: droneNum
-    % Generate population with random paths.
-    drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
-        , d, drones.capac(d), drones.cluster);
-    %nextGeneration = zeros(popSize,numberOfCities);
-end
+% 
+% for d = 1: droneNum
+%     % Generate population with random paths.
+%     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
+%         , d, drones.capac(d), drones.cluster);
+%     %nextGeneration = zeros(popSize,numberOfCities);
+% end
 
 
 
@@ -46,7 +46,9 @@ end
 %minPathes = zeros(generationNumber,1);
 blockedPaths = [];
 % Genetic algorithm itself.
-for d = 1: droneNum 
+for d = 1: droneNum
+    drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
+        , d, drones.capac(d), drones.cluster);
     for gN = 1: generationNumber
         for k = 1: drones.popSize
             drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...

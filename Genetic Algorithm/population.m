@@ -4,7 +4,7 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
     nodeNo = length(fireIntensity);
     for i = 1: popSize
         initial_node = randi([1, nodeNo]);
-        while (ismembertol(initial_node, toursFound) == 1 && ...
+        while (ismembertol(initial_node, toursFound) == 1 || ...
                 fireIntensity(initial_node) > droneCapac)
             initial_node = randi([1, nodeNo]);
         end
