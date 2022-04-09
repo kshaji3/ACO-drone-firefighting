@@ -96,5 +96,5 @@ for d = 1: droneNum
         end
     end
     bestTour = findBestTour(drones.cluster(d), drones.popSize);
-    
+    drones.allUsedNodes = [drones.allUsedNodes, bestTour];
 end

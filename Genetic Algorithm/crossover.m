@@ -14,7 +14,7 @@ function [ childPath ] = crossover( parent1Path, parent2Path, prob, drones, envi
             if (ismembertol(parent2Path(i), childPath) == 0)
                 if (intensity + ...
                         environment.fires.intensity(parent2Path(i)) < ...
-                        drones(droneNo).capac)
+                        drones.capac(droneNo))
                     childPath = [childPath, parent2Path(i)];
                 end
             end
