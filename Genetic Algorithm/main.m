@@ -5,7 +5,7 @@ global gNumber;
 
 %% Set file names
 fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
-sheetName = 'sheet9';
+sheetName = 'sheet7';
 trialName = 'trial1';
 regionName = 'northeast';
 outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');
@@ -28,7 +28,7 @@ distances = calculateDistance(environment.fires.loc);
 drones.popSize = 100;
 drones.crossoverProbability = 0.9;
 drones.mutationProbability = 0.05;
-generationNumber = 100;
+generationNumber = 10;
 drones.cluster = [];
 drones.allUsedNodes = [];
 % 
@@ -97,6 +97,7 @@ for d = 1: droneNum
             drones.cluster(d).pop(k).tour = cell2mat(nextGeneration(k));
         end
     end
-    bestTour = findBestTour(drones.cluster(d), drones.popSize);
-    drones.allUsedNodes = [drones.allUsedNodes, bestTour];
+    [bestTour{d}, indexBest] = findBestTour(drones.cluster(d), drones.popSize);
+    remainingFireExtinguisher(d) = drones.capac(d) - drones.cluster(d).pop(indexBest).fireSum;
+    drones.allUsedNodes = [drones.allUsedNodes, bestTour{d}];
 end
