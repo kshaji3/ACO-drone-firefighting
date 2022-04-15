@@ -12,14 +12,16 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
         cluster(droneNo).pop(i).fires(1) = fireIntensity(initial_node);
         cluster(droneNo).pop(i).tour(1) = initial_node;
         j = 2;
-        while (droneCapac > cluster(droneNo).pop(i).fireSum && j < nodeNo)
+        abortCondition = 0;
+        while (droneCapac > cluster(droneNo).pop(i).fireSum && j < nodeNo && abortCondition == 0)
             nextNode = rouletteWheel(cluster(droneNo).pop(i).tour, toursFound, nodeNo);
-            while (ismembertol(nextNode, cluster(droneNo).pop(i).tour) == 1)
-                nextNode = rouletteWheel(cluster(droneNo).pop(i).tour, toursFound, nodeNo);
+            if (isempty(nextNode) == 1)    
+                cluster(droneNo).pop(i).tour = [cluster(droneNo).pop(i).tour, nextNode];
+                cluster(droneNo).pop(i).fires = [cluster(droneNo).pop(i).fires, fireIntensity(nextNode)];
+                cluster(droneNo).pop(i).fireSum = [cluster(droneNo).pop(i).fireSum + fireIntensity(nextNode)];
+            else
+                abortCondition = 1;
             end
-            cluster(droneNo).pop(i).tour = [cluster(droneNo).pop(i).tour, nextNode];
-            cluster(droneNo).pop(i).fires = [cluster(droneNo).pop(i).fires, fireIntensity(nextNode)];
-            cluster(droneNo).pop(i).fireSum = [cluster(droneNo).pop(i).fireSum + fireIntensity(nextNode)];
         end
         
         if droneCapac < cluster(droneNo).pop(i).fireSum
