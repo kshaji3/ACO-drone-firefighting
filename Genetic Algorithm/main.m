@@ -140,7 +140,7 @@ for i = 1: length(environment.fires.intensity)
     end
 end
 
-droneNumber = 1;
+droneInd = 1;
 environment.fires.uIntensity = zeros(1, length(drones.allUnusedNodes));
 %records intensity of the trashs in the unused nodes
 for i = 1: length(drones.allUnusedNodes)
@@ -149,29 +149,32 @@ end
 
 %needs work from here - 4/15
 for i = 1: length(drones.allUnusedNodes)
-    while (~(droneNumber > droneNum) && environment.fires.uIntensity(1, i) ~= 0)
+    while (~(droneInd > droneNum) && environment.fires.uIntensity(1, i) ~= 0)
         %drones with no trash extinguisher are not rerouted
-        indTotDiff = drones.capac(d) - drones.cluster(droneNumber).pop(indexBest(droneNumber)).fireSum;
-        if (drones.cluster(droneNumber).queen.trashTotDiff <= 0.05)
-            droneNumber = droneNumber + 1;
+        indTotDiff(droneInd) = drones.capac(droneInd) - drones.cluster(droneInd).pop(indexBest(droneInd)).fireSum;
+        if (indTotDiff(droneInd) <= 0.05)
+            droneInd = droneInd + 1;
         %routing drones and setting new trash values for trashs that require
         %the drone to expend all of its trash extinguisher
-        elseif (environment.trashs.uIntensity(1, i) - drones.colony(droneNumber).queen.trashTotDiff >= 0)    
-            environment.trashs.uIntensity(1, i) = environment.trashs.uIntensity(1, i) - drones.colony(droneNumber).queen.trashTotDiff;
-            drones.colony(droneNumber).queen.tour = [drones.colony(droneNumber).queen.tour, drones.allUnusedNodes(1, i)];
-            bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i) + drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
-            drones.colony(droneNumber).queen.trashTotDiff = 0;
-            droneNumber = droneNumber + 1;
+        elseif (environment.fires.uIntensity(1, i) - indTotDiff >= 0)    
+            environment.fires.uIntensity(1, i) = environment.fires.uIntensity(1, i) - indTotDiff(droneInd);
+            drones.cluster(droneInd).pop(indexBest(droneInd)).tour = ...
+                [drones.cluster(droneInd).pop(indexBest(droneInd)).tour, drones.allUnusedNodes(1, i)];
+            bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i) ...
+                + indTotDiff(droneInd) / environment.fires.intensity(drones.allUnusedNodes(1, i))];
+            indTotDiff(droneInd) = 0;
+            droneInd = droneInd + 1;
         %if the drone has trash extinguisher left after fighting one trash
         else
-            if (environment.trashs.uIntensity(1, i) == environment.trashs.intensity(drones.allUnusedNodes(1, i)))
-                bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i)];
+            if (environment.fires.uIntensity(1, i) == environment.fires.intensity(drones.allUnusedNodes(1, i)))
+                bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i)];
             else
-                bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i)+ environment.trashs.uIntensity(1, i) / environment.trashs.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
+                bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i)...
+                    + environment.fires.uIntensity(1, i) / environment.fires.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
             end
-            drones.colony(droneNumber).queen.trashTotDiff = drones.colony(droneNumber).queen.trashTotDiff - environment.trashs.uIntensity(1, i);
-            environment.trashs.uIntensity(1, i) = 0;
-            drones.colony(droneNumber).queen.tour = [drones.colony(droneNumber).queen.tour, drones.allUnusedNodes(1, i)];
+            indTotDiff(droneInd) = indTotDiff(droneInd) - environment.fires.uIntensity(1, i);
+            environment.fires.uIntensity(1, i) = 0;
+            drones.cluster(droneInd).pop(indexBest(droneInd)).tour = [drones.cluster(droneInd).pop(indexBest(droneInd)).tour, drones.allUnusedNodes(1, i)];
         end
     end
 end
