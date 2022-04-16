@@ -9,6 +9,9 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
             initial_node = randi([1, nodeNo]);
         end
         cluster(droneNo).pop(i).fireSum = fireIntensity(initial_node);
+        if (isempty(cluster(droneNo).pop(i).fireSum))
+            cluster(droneNo).pop(i).fireSum = 0;
+        end
         cluster(droneNo).pop(i).fires(1) = fireIntensity(initial_node);
         cluster(droneNo).pop(i).tour(1) = initial_node;
         j = 2;

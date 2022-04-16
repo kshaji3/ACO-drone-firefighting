@@ -21,6 +21,8 @@ environment.fires = generateCities(fireDatasheet, sheetName);
 environment.netFireSum = sum(environment.fires.intensity);
 drones.netDroneExtSum = sum(drones.capac);
 bestPathSoFar = Inf; 
+[graph] = createGraph(environment.fires.loc(1,:), environment.fires.loc(2,:)...
+    , environment.fires.loc(3,:));
 
 %% Initial Parameters
 % Calculating distances between cities according to created city locations.
@@ -178,3 +180,14 @@ for i = 1: length(drones.allUnusedNodes)
         end
     end
 end
+
+%% Graph the Best Tour as a separate figure
+
+%graph best tours
+graphFigures.fig2 = figure('Position', get(0, 'Screensize'));
+
+%Graph best tours for all drones that were used
+for d = 1: drones.actualNumberDronesUsed
+    drawBestTour(bestTour{d}, drones, d, graph);
+end
+title('Best Overall Tour of All Iterations')
