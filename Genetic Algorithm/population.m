@@ -16,13 +16,14 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
         cluster(droneNo).pop(i).tour(1) = initial_node;
         j = 2;
         abortCondition = 0;
-        while (droneCapac > cluster(droneNo).pop(i).fireSum && j < nodeNo && abortCondition == 0)
+        while (abortCondition == 0 && droneCapac > cluster(droneNo).pop(i).fireSum && j < nodeNo)
             nextNode = rouletteWheel(cluster(droneNo).pop(i).tour, toursFound, nodeNo);
             if (isempty(nextNode) == 1)    
                 cluster(droneNo).pop(i).tour = [cluster(droneNo).pop(i).tour, nextNode];
                 cluster(droneNo).pop(i).fires = [cluster(droneNo).pop(i).fires, fireIntensity(nextNode)];
                 cluster(droneNo).pop(i).fireSum = [cluster(droneNo).pop(i).fireSum + fireIntensity(nextNode)];
             else
+                %makes sure no more looping if nextNode is empty
                 abortCondition = 1;
             end
         end

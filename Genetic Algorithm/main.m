@@ -88,7 +88,7 @@ for d = 1: droneNum
                 'first');
             parent2Path = drones.cluster(d).pop(parent2X).tour;
             childPath = crossover(parent1Path, parent2Path, drones.crossoverProbability, ...
-                drones, environment, d);
+                drones, environment.fires, d);
             childPath = mutate(childPath, drones.mutationProbability);
             
             

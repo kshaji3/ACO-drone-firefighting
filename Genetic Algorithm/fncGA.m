@@ -1,18 +1,18 @@
-function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, indHoriz)
+function [time] = fncGA(graph, environment, droneNum, popSize, maxIter, indVert, indHoriz)
     timeStart = tic;
     
-    [drones] = createDrones(environment.fires, droneNum);
-    environment.netFireSum = sum(environment.fires.intensity);
+    [drones] = createDrones(environment.fires{indVert, indHoriz}, droneNum);
+    environment.netFireSum = sum(environment.fires{indVert, indHoriz}.intensity);
     drones.netDroneExtSum = sum(drones.capac);
     bestPathSoFar = Inf; 
 
     %% Initial Parameters
     % Calculating distances between cities according to created city locations.
-    distances = calculateDistance(environment.fires.loc);
+    distances = calculateDistance(environment.fires{indVert, indHoriz}.loc);
     drones.popSize = popSize;
     drones.crossoverProbability = 0.9;
     drones.mutationProbability = 0.05;
-    generationNumber = 10;
+    generationNumber = maxIter;
     drones.cluster = [];
     drones.allUsedNodes = [];
     
@@ -20,7 +20,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
     % 
     % for d = 1: droneNum
     %     % Generate population with random paths.
-    %     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
+    %     drones.cluster = population(drones.popSize, environment.fires{indVert, indHoriz}.intensity, drones.allUsedNodes...
     %         , d, drones.capac(d), drones.cluster);
     %     %nextGeneration = zeros(popSize,numberOfCities);
     % end
@@ -33,13 +33,13 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
     blockedPaths = [];
     % Genetic algorithm itself.
     for d = 1: droneNum
-        drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
+        drones.cluster = population(drones.popSize, environment.fires{indVert, indHoriz}.intensity, drones.allUsedNodes...
             , d, drones.capac(d), drones.cluster);
         for gN = 1: generationNumber
             for k = 1: drones.popSize
                 drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...
                     drones.cluster(d).pop(k), drones.capac(d), droneNum, ...
-                    length(environment.fires.intensity));
+                    length(environment.fires{indVert, indHoriz}.intensity));
             end
             tournamentSize=4;
             for k=1: drones.popSize
@@ -72,7 +72,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
                     'first');
                 parent2Path = drones.cluster(d).pop(parent2X).tour;
                 childPath = crossover(parent1Path, parent2Path, drones.crossoverProbability, ...
-                    drones, environment, d);
+                    drones, environment.fires{indVert, indHoriz}, d);
                 childPath = mutate(childPath, drones.mutationProbability);
 
 
@@ -82,7 +82,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
                 %create array that I can then embed into the cell
                 %keeps the data structue usage consistent
                 for m = 1: length(childPath)
-                    nextGenPathInts = [nextGenPathInts, environment.fires.intensity(childPath(m))];
+                    nextGenPathInts = [nextGenPathInts, environment.fires{indVert, indHoriz}.intensity(childPath(m))];
                 end
 
                 %this enables for fire intensity arrays to be stored
@@ -99,7 +99,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
         for k = 1: drones.popSize
             drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...
                 drones.cluster(d).pop(k), drones.capac(d), droneNum, ...
-                length(environment.fires.intensity));
+                length(environment.fires{indVert, indHoriz}.intensity));
         end
         [bestTour{d}, indexBest(d)] = findBestTour(drones.cluster(d), drones.popSize);
         remainingFireExtinguisher(d) = drones.capac(d) - drones.cluster(d).pop(indexBest(d)).fireSum;
@@ -109,7 +109,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
 
     %% Cooperative Search Part to Target Untargeted trashs
 
-    drones.allUnusedNodes = zeros(1, length(environment.fires.intensity) - length(drones.allUsedNodes));
+    drones.allUnusedNodes = zeros(1, length(environment.fires{indVert, indHoriz}.intensity) - length(drones.allUsedNodes));
     uCounter = 1;
 
     %variable that denotes if less than 5 drones have been used for the
@@ -118,7 +118,7 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
 
     %records all the nodes that have not been used, which is used for the
     %cooperative solution finding
-    for i = 1: length(environment.fires.intensity)
+    for i = 1: length(environment.fires{indVert, indHoriz}.intensity)
         if ~(ismembertol(i, drones.allUsedNodes))
             drones.allUnusedNodes(1, uCounter) = i;
             uCounter = uCounter + 1;
@@ -127,54 +127,42 @@ function [time] = fncGA(graph, environment.fires, droneNum, popSize, indVert, in
     end
 
     droneInd = 1;
-    environment.fires.uIntensity = zeros(1, length(drones.allUnusedNodes));
+    environment.fires{indVert, indHoriz}.uIntensity = zeros(1, length(drones.allUnusedNodes));
     %records intensity of the trashs in the unused nodes
     for i = 1: length(drones.allUnusedNodes)
-        environment.fires.uIntensity(1, i) = environment.fires.intensity(drones.allUnusedNodes(1, i));
+        environment.fires{indVert, indHoriz}.uIntensity(1, i) = environment.fires{indVert, indHoriz}.intensity(drones.allUnusedNodes(1, i));
     end
 
     %needs work from here - 4/15
     for i = 1: length(drones.allUnusedNodes)
-        while (~(droneInd > droneNum) && environment.fires.uIntensity(1, i) ~= 0)
+        while (~(droneInd > droneNum) && environment.fires{indVert, indHoriz}.uIntensity(1, i) ~= 0)
             %drones with no trash extinguisher are not rerouted
             indTotDiff(droneInd) = drones.capac(droneInd) - drones.cluster(droneInd).pop(indexBest(droneInd)).fireSum;
             if (indTotDiff(droneInd) <= 0.05)
                 droneInd = droneInd + 1;
             %routing drones and setting new trash values for trashs that require
             %the drone to expend all of its trash extinguisher
-            elseif (environment.fires.uIntensity(1, i) - indTotDiff >= 0)    
-                environment.fires.uIntensity(1, i) = environment.fires.uIntensity(1, i) - indTotDiff(droneInd);
+            elseif (environment.fires{indVert, indHoriz}.uIntensity(1, i) - indTotDiff >= 0)    
+                environment.fires{indVert, indHoriz}.uIntensity(1, i) = environment.fires{indVert, indHoriz}.uIntensity(1, i) - indTotDiff(droneInd);
                 drones.cluster(droneInd).pop(indexBest(droneInd)).tour = ...
                     [drones.cluster(droneInd).pop(indexBest(droneInd)).tour, drones.allUnusedNodes(1, i)];
                 bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i) ...
-                    + indTotDiff(droneInd) / environment.fires.intensity(drones.allUnusedNodes(1, i))];
+                    + indTotDiff(droneInd) / environment.fires{indVert, indHoriz}.intensity(drones.allUnusedNodes(1, i))];
                 indTotDiff(droneInd) = 0;
                 droneInd = droneInd + 1;
             %if the drone has trash extinguisher left after fighting one trash
             else
-                if (environment.fires.uIntensity(1, i) == environment.fires.intensity(drones.allUnusedNodes(1, i)))
+                if (environment.fires{indVert, indHoriz}.uIntensity(1, i) == environment.fires{indVert, indHoriz}.intensity(drones.allUnusedNodes(1, i)))
                     bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i)];
                 else
                     bestTour{droneInd} = [bestTour{droneInd}, drones.allUnusedNodes(1, i)...
-                        + environment.fires.uIntensity(1, i) / environment.fires.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
+                        + environment.fires{indVert, indHoriz}.uIntensity(1, i) / environment.fires{indVert, indHoriz}.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
                 end
-                indTotDiff(droneInd) = indTotDiff(droneInd) - environment.fires.uIntensity(1, i);
-                environment.fires.uIntensity(1, i) = 0;
+                indTotDiff(droneInd) = indTotDiff(droneInd) - environment.fires{indVert, indHoriz}.uIntensity(1, i);
+                environment.fires{indVert, indHoriz}.uIntensity(1, i) = 0;
                 drones.cluster(droneInd).pop(indexBest(droneInd)).tour = [drones.cluster(droneInd).pop(indexBest(droneInd)).tour, drones.allUnusedNodes(1, i)];
             end
         end
     end
-
-    %% Graph the Best Tour as a separate figure
-
-    %graph best tours
-    graphFigures.fig2 = figure('Position', get(0, 'Screensize'));
-
-    %Graph best tours for all drones that were used
-    for d = 1: drones.actualNumberDronesUsed
-        drawBestTour(bestTour{d}, drones, d, graph);
-    end
-    title('Best Overall Tour of All Iterations')
-
-
+    time = toc(timeStart);
 end

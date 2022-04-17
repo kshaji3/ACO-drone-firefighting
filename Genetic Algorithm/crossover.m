@@ -1,4 +1,4 @@
-function [ childPath ] = crossover( parent1Path, parent2Path, prob, drones, environment, droneNo )
+function [ childPath ] = crossover( parent1Path, parent2Path, prob, drones, fires, droneNo )
 % Generating child path from given two parent pathes by using ordered one
 % crossover method.
     random = rand();
@@ -8,12 +8,12 @@ function [ childPath ] = crossover( parent1Path, parent2Path, prob, drones, envi
         cutPoint = randi(length(parent1Path));
         for i = 1: cutPoint
             childPath = [childPath, parent1Path(i)]; 
-            intensity = intensity + environment.fires.intensity(parent1Path(i));
+            intensity = intensity + fires.intensity(parent1Path(i));
         end
         for i = 1: length(parent2Path)
             if (ismembertol(parent2Path(i), childPath) == 0)
                 if (intensity + ...
-                        environment.fires.intensity(parent2Path(i)) < ...
+                        fires.intensity(parent2Path(i)) < ...
                         drones.capac(droneNo))
                     childPath = [childPath, parent2Path(i)];
                 end

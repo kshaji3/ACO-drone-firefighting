@@ -17,13 +17,6 @@ end
 %get the fires and drones
 
 droneNo = 5; %agents in CVRP
-for i = 1: length(regionNames)
-    for j = 1: numTrialsPerRegion
-        environment.fires{i, j} = createFires(fireDataSheet{i}, sheetName{j});
-        graph{i, j} = createGraph(environment.fires{i, j}.locX, environment.fires{i, j}.locY, environment.fires{i, j}.locZ);
-    end
-end
-% [drones] = createDrones(environment.fires{1, 1}, droneNo);
 
 
 %% Initial Parameters

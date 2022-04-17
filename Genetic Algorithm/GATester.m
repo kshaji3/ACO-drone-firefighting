@@ -17,34 +17,29 @@ end
 %get the fires and drones
 
 droneNo = 5; %agents in CVRP
-for i = 1: length(regionNames)
-    for j = 1: numTrialsPerRegion
-        environment.fires{i, j} = createFires(fireDataSheet{i}, sheetName{j});
-        graph{i, j} = createGraph(environment.fires{i, j}.locX, environment.fires{i, j}.locY, environment.fires{i, j}.locZ);
-    end
-end
-% [drones] = createDrones(environment.fires{1, 1}, droneNo);
-
 
 %% Initial Parameters
 
 
 environment.maxIter = 10; %1
 iterations = 5;
+popSize = 5;
 for i = 1: iterations
     %cycle through for 10 - 50 ants
     
     droneNo = 5; %agents in CVRP
     for k = 1: length(regionNames)
         for j = 1: numTrialsPerRegion
-            environment.fires{k, j} = createFires(fireDataSheet{k}, sheetName{j});
-            graph{k, j} = createGraph(environment.fires{k, j}.locX, environment.fires{k, j}.locY, environment.fires{k, j}.locZ);
+            environment.fires{k, j} = generateCities(fireDataSheet{k}, sheetName{j});
+            graph{k, j} = createGraph(environment.fires{k, j}.loc(1,:), ...
+                environment.fires{k, j}.loc(2,:), environment.fires{k, j}.loc(3,:));
         end
     end
     for j = 1: length(regionNames)
         for k = 1: numTrialsPerRegion
             rho = 1 * (i + 2) / 10;
-            time(j, k) = aco3(graph{j, k}, environment, droneNo, 10, j, k, rho);
+            time(j, k) = fncGA(graph{j, k}, environment, droneNo, popSize, ...
+                environment.maxIter, j, k);
         end
     end
     totalTimeTable{i} = time;
