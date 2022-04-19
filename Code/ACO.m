@@ -4,7 +4,7 @@ clc
 tic; %start the program timer
 
 %% Set File Names
-trashDatasheet = '../data-manipulation/northeast-samples.xlsx';
+fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
 sheetName = 'sheet9';
 trialName = 'trial1';
 regionName = 'northeast';
@@ -13,16 +13,16 @@ outputToursName = strcat(trialName, '-', regionName, '-', 'tours', '.png');
 outputBestToursName = strcat(trialName, '-', regionName, '-', 'best-tour', '.png');
 
 %% Problem Preparation
-%get the trashs and drones
+%get the fires and drones
 
-environment.trashs = createtrashs(trashDatasheet, sheetName);
+environment.fires = createFires(fireDatasheet, sheetName);
 droneNo = 5; %agents in CVRP
-[drones] = createDrones(environment.trashs, droneNo);
-environment.nettrashSum = sum(environment.trashs.intensity);
+[drones] = createDrones(environment.fires, droneNo);
+environment.netfireSum = sum(environment.fires.intensity);
 drones.netDroneExtSum = sum(drones.capac);
 
 %Create the graph
-[graph] = createGraph(environment.trashs.locX, environment.trashs.locY, environment.trashs.locZ);
+[graph] = createGraph(environment.fires.locX, environment.fires.locY, environment.fires.locZ);
 
 %Draw the graph
 graphFigures.fig1 = figure('Position', get(0, 'Screensize'));
@@ -51,13 +51,13 @@ environment.beta = 1;  % Desirability exponetial parameter
 %initial base conditions: extreme ones which the program will obviously
 %beat
 %purpose is to initialize all of the variables
-drones.besttrashFitness = inf(1, droneNo);
-drones.besttrashDist = zeros(1, droneNo); %best trash's distance
+drones.bestfireFitness = inf(1, droneNo);
+drones.bestfireDist = zeros(1, droneNo); %best fire's distance
 
-%stores individual trash fitness values
-drones.besttrashFit1 = zeros(1, droneNo);
-drones.besttrashFit2 = zeros(1, droneNo);
-drones.besttrashFit3 = zeros(1, droneNo);
+%stores individual fire fitness values
+drones.bestfireFit1 = zeros(1, droneNo);
+drones.bestfireFit2 = zeros(1, droneNo);
+drones.bestfireFit3 = zeros(1, droneNo);
 bestTour = {};
 drones.colony = [];
 drones.bestOverallFitness = zeros(1, droneNo); %datapoint that shows overall how ideal the whole solution is
@@ -74,47 +74,47 @@ t = 1; %fenceposting
 for d = 1: droneNo
     %create ants
     while t <= environment.maxIter && drones.bestSolutionsFound(d) ~= 1
-        drones.colony = createColonies(t, graph, environment.trashs.intensity, drones.capac(d), ...
+        drones.colony = createColonies(t, graph, environment.fires.intensity, drones.capac(d), ...
             d, drones.colony, drones.antNo, drones.tau(:,:,d), graph.eta, environment.alpha, environment.beta, drones.allUsedNodes);
         for k = 1: drones.antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
             drones.colony(d).ant(k).distFitness = distFitnessFunction(drones, d, drones.colony(d).ant(k).tour,  graph);
-            [trashOverall, trashFit1, trashFit2, trashFit3] = trashFitnessFunction(drones.colony(d).ant(k), drones.capac(d), droneNo, length(environment.trashs.locX));
+            [fireOverall, fireFit1, fireFit2, fireFit3] = fireFitnessFunction(drones.colony(d).ant(k), drones.capac(d), droneNo, length(environment.fires.locX));
             
             %stores variables into the colony struct.
-            drones.colony(d).ant(k).trashFitness = trashOverall;
-            drones.colony(d).ant(k).trashTotDiff = trashFit1;
-            drones.colony(d).ant(k).trashEq = trashFit2;
-            drones.colony(d).ant(k).trashInt = trashFit3;
+            drones.colony(d).ant(k).fireFitness = fireOverall;
+            drones.colony(d).ant(k).fireTotDiff = fireFit1;
+            drones.colony(d).ant(k).fireEq = fireFit2;
+            drones.colony(d).ant(k).fireInt = fireFit3;
         end
         
         %check if any of the ants offer a better solution than the ones
         %found already
         for k = 1: 1: drones.antNo
-            if drones.besttrashFitness(1, d) > drones.colony(d).ant(k).trashFitness
-                drones.besttrashFitness(1, d) = drones.colony(d).ant(k).trashFitness;
+            if drones.bestfireFitness(1, d) > drones.colony(d).ant(k).fireFitness
+                drones.bestfireFitness(1, d) = drones.colony(d).ant(k).fireFitness;
                 bestTour{d} = drones.colony(d).ant(k).tour;
-                drones.besttrashDist(1, d) = drones.colony(d).ant(k).distFitness;
-                drones.besttrashFit1(1, d) = drones.colony(d).ant(k).trashTotDiff;
-                drones.besttrashFit2(1, d) = drones.colony(d).ant(k).trashEq;
-                drones.besttrashFit3(1, d) = drones.colony(d).ant(k).trashInt;
+                drones.bestfireDist(1, d) = drones.colony(d).ant(k).distFitness;
+                drones.bestfireFit1(1, d) = drones.colony(d).ant(k).fireTotDiff;
+                drones.bestfireFit2(1, d) = drones.colony(d).ant(k).fireEq;
+                drones.bestfireFit3(1, d) = drones.colony(d).ant(k).fireInt;
             else
             end
         end
     
         %Find the best ant of this colony
         drones.colony(d).queen.tour = bestTour{d};
-        drones.colony(d).queen.trashTotDiff = drones.besttrashFit1(1, d);
-        drones.colony(d).queen.trashEq = drones.besttrashFit2(1, d);
-        drones.colony(d).queen.trashInt = drones.besttrashFit3(1, d);
-        drones.colony(d).queen.trashFitness = drones.besttrashFitness(1, d);
+        drones.colony(d).queen.fireTotDiff = drones.bestfireFit1(1, d);
+        drones.colony(d).queen.fireEq = drones.bestfireFit2(1, d);
+        drones.colony(d).queen.fireInt = drones.bestfireFit3(1, d);
+        drones.colony(d).queen.fireFitness = drones.bestfireFitness(1, d);
 %         
         %Update pheromone matrix
         drones.tau(:, :, d) = updatePheromone(drones.tau(:, :, d), drones.colony(d));
         
         %Evaporation
         drones.tau(:, :, d) = (1 - environment.rho) .* drones.tau(:, :, d);
-        outmsg = ['Iteration = #', num2str(t), ' Drone = #' , num2str(d), ' Fitness = # ', num2str(drones.colony(d).queen.trashFitness(1, 1)) ];
+        outmsg = ['Iteration = #', num2str(t), ' Drone = #' , num2str(d), ' Fitness = # ', num2str(drones.colony(d).queen.fireFitness(1, 1)) ];
         %enables for tracking of progress by displaying output.
         disp(outmsg)
         subplot(2, 4, 3)
@@ -133,7 +133,7 @@ for d = 1: droneNo
         
         %serves if the ultra ideal solution is found so that the code stops
         %iterating
-        if drones.colony(d).queen.trashFitness == 0.01 && drones.bestSolutionsFound(d) == 0
+        if drones.colony(d).queen.fireFitness == 0.01 && drones.bestSolutionsFound(d) == 0
            drones.bestSolutionsFound(d) = 1;      
         else
         end
@@ -152,15 +152,15 @@ for d = 1: droneNo
     %visited, which is used later
     drones.allUsedNodes = cell2mat(bestTour);
     t = 1;
-    if length(drones.allUsedNodes) == length(environment.trashs.locX)
+    if length(drones.allUsedNodes) == length(environment.fires.locX)
         break
     else
     end
 end
 
-%% Cooperative Search Part to Target Untargeted trashs
+%% Cooperative Search Part to Target Untargeted fires
 
-drones.allUnusedNodes = zeros(1, length(environment.trashs.intensity) - length(drones.allUsedNodes));
+drones.allUnusedNodes = zeros(1, length(environment.fires.intensity) - length(drones.allUsedNodes));
 uCounter = 1;
 
 %variable that denotes if less than 5 drones have been used for the
@@ -169,7 +169,7 @@ drones.actualNumberDronesUsed = length(bestTour);
 
 %records all the nodes that have not been used, which is used for the
 %cooperative solution finding
-for i = 1: length(environment.trashs.intensity)
+for i = 1: length(environment.fires.intensity)
     if ~(ismembertol(i, drones.allUsedNodes))
         drones.allUnusedNodes(1, uCounter) = i;
         uCounter = uCounter + 1;
@@ -178,35 +178,35 @@ for i = 1: length(environment.trashs.intensity)
 end
 
 droneNumber = 1;
-environment.trashs.uIntensity = zeros(1, length(drones.allUnusedNodes));
-%records intensity of the trashs in the unused nodes
+environment.fires.uIntensity = zeros(1, length(drones.allUnusedNodes));
+%records intensity of the fires in the unused nodes
 for i = 1: length(drones.allUnusedNodes)
-    environment.trashs.uIntensity(1, i) = environment.trashs.intensity(drones.allUnusedNodes(1, i));
+    environment.fires.uIntensity(1, i) = environment.fires.intensity(drones.allUnusedNodes(1, i));
 end
 
 
 for i = 1: length(drones.allUnusedNodes)
-    while (~(droneNumber > droneNo) && environment.trashs.uIntensity(1, i) ~= 0)
-        %drones with no trash extinguisher are not rerouted
-        if (drones.colony(droneNumber).queen.trashTotDiff <= 0.05)
+    while (~(droneNumber > droneNo) && environment.fires.uIntensity(1, i) ~= 0)
+        %drones with no fire extinguisher are not rerouted
+        if (drones.colony(droneNumber).queen.fireTotDiff <= 0.05)
             droneNumber = droneNumber + 1;
-        %routing drones and setting new trash values for trashs that require
-        %the drone to expend all of its trash extinguisher
-        elseif (environment.trashs.uIntensity(1, i) - drones.colony(droneNumber).queen.trashTotDiff >= 0)    
-            environment.trashs.uIntensity(1, i) = environment.trashs.uIntensity(1, i) - drones.colony(droneNumber).queen.trashTotDiff;
+        %routing drones and setting new fire values for fires that require
+        %the drone to expend all of its fire extinguisher
+        elseif (environment.fires.uIntensity(1, i) - drones.colony(droneNumber).queen.fireTotDiff >= 0)    
+            environment.fires.uIntensity(1, i) = environment.fires.uIntensity(1, i) - drones.colony(droneNumber).queen.fireTotDiff;
             drones.colony(droneNumber).queen.tour = [drones.colony(droneNumber).queen.tour, drones.allUnusedNodes(1, i)];
-            bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i) + drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
-            drones.colony(droneNumber).queen.trashTotDiff = 0;
+            bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i) + drones.colony(droneNumber).queen.fireTotDiff / environment.fires.intensity(drones.allUnusedNodes(1, i))];
+            drones.colony(droneNumber).queen.fireTotDiff = 0;
             droneNumber = droneNumber + 1;
-        %if the drone has trash extinguisher left after fighting one trash
+        %if the drone has fire extinguisher left after fighting one fire
         else
-            if (environment.trashs.uIntensity(1, i) == environment.trashs.intensity(drones.allUnusedNodes(1, i)))
+            if (environment.fires.uIntensity(1, i) == environment.fires.intensity(drones.allUnusedNodes(1, i)))
                 bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i)];
             else
-                bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i)+ environment.trashs.uIntensity(1, i) / environment.trashs.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.trashTotDiff / environment.trashs.intensity(drones.allUnusedNodes(1, i))];
+                bestTour{droneNumber} = [bestTour{droneNumber}, drones.allUnusedNodes(1, i)+ environment.fires.uIntensity(1, i) / environment.fires.intensity(drones.allUnusedNodes(1, i))]; %+ drones.colony(droneNumber).queen.fireTotDiff / environment.fires.intensity(drones.allUnusedNodes(1, i))];
             end
-            drones.colony(droneNumber).queen.trashTotDiff = drones.colony(droneNumber).queen.trashTotDiff - environment.trashs.uIntensity(1, i);
-            environment.trashs.uIntensity(1, i) = 0;
+            drones.colony(droneNumber).queen.fireTotDiff = drones.colony(droneNumber).queen.fireTotDiff - environment.fires.uIntensity(1, i);
+            environment.fires.uIntensity(1, i) = 0;
             drones.colony(droneNumber).queen.tour = [drones.colony(droneNumber).queen.tour, drones.allUnusedNodes(1, i)];
         end
     end
@@ -223,7 +223,7 @@ graphFigures.fig2 = figure('Position', get(0, 'Screensize'));
 %Graph best tours for all drones that were used
 for d = 1: drones.actualNumberDronesUsed
     drawBestTour(drones.colony(d), drones, d, graph);
-    drones.bestOverallFitness(1, d) = drones.colony(d).queen.trashFitness;
+    drones.bestOverallFitness(1, d) = drones.colony(d).queen.fireFitness;
 end
 title('Best Overall Tour of All Iterations')
 
@@ -242,12 +242,12 @@ outputTable.overallFitnessTable = array2table(drones.bestOverallFitness, 'Variab
 
 %format the tables so we can save them in an excel file with multiple
 %sheets
-outputTable.trashColNames = string([1, length(environment.trashs.locX)]);
-for i = 1: length(environment.trashs.locX)
-    colName = "trash #" + num2str(i);
-    outputTable.trashColNames(1, i) = colName;
+outputTable.fireColNames = string([1, length(environment.fires.locX)]);
+for i = 1: length(environment.fires.locX)
+    colName = "fire #" + num2str(i);
+    outputTable.fireColNames(1, i) = colName;
 end
-outputTable.trashIntensityTable = array2table(environment.trashs.intensity, 'VariableNames', outputTable.trashColNames);
+outputTable.fireIntensityTable = array2table(environment.fires.intensity, 'VariableNames', outputTable.fireColNames);
 outputTable.rowName = "Time Elapsed";
 outputTable.timeElapsedTable = array2table(timeElapsed, 'RowNames', outputTable.rowName);
 outputTable.fileName = outputExcelName;
@@ -256,7 +256,7 @@ outputTable.sheetName = trialName;
 writetable(outputTable.tourTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A1');
 writetable(outputTable.droneIntensityTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A4');
 writetable(outputTable.overallFitnessTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A7');
-writetable(outputTable.trashIntensityTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A10');
+writetable(outputTable.fireIntensityTable,outputTable.fileName,'Sheet', outputTable.sheetName, 'Range', 'A10');
 writetable(outputTable.timeElapsedTable, outputTable.fileName, 'Sheet', outputTable.sheetName, 'Range', 'A13');
 
 %save the figures used as png files in the project folder

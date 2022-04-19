@@ -25,9 +25,10 @@ droneNo = 5; %agents in CVRP
 environment.maxIter = 10; %1
 iterations = 5;
 rho = 0.6;
+antNo = 10;
 for i = 1: iterations
     %cycle through for 10 - 50 ants
-    antNo = 10 * i;
+    
     droneNo = 5; %agents in CVRP
     for k = 1: length(regionNames)
         for j = 1: numTrialsPerRegion
@@ -35,10 +36,11 @@ for i = 1: iterations
             graph{k, j} = createGraph(environment.fires{k, j}.locX, environment.fires{k, j}.locY, environment.fires{k, j}.locZ);
         end
     end
+
     for j = 1: length(regionNames)
         for k = 1: numTrialsPerRegion
             rho = 1 * (i + 2) / 10;
-            time(j, k) = aco3(graph{j, k}, environment, droneNo, antNo, j, k, rho);
+            time(j, k) = aco3(graph{j, k}, environment, droneNo, 10, j, k, rho);
         end
     end
     totalTimeTable{i} = time;

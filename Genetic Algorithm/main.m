@@ -42,7 +42,7 @@ drones.allUsedNodes = [];
 % end
 
 
-
+bestFitness = Inf;
 
 %Keeping track of minimum paths through every iteration.
 %minPathes = zeros(generationNumber,1);
@@ -51,7 +51,10 @@ blockedPaths = [];
 for d = 1: droneNum
     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
         , d, drones.capac(d), drones.cluster);
-    for gN = 1: generationNumber
+    gN = 1;
+    bestFitness = Inf;
+    isConverged = 0;
+    while (gN < generationNumber && isConverged ~= 3)
         for k = 1: drones.popSize
             drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...
                 drones.cluster(d).pop(k), drones.capac(d), droneNum, ...
@@ -111,6 +114,14 @@ for d = 1: droneNum
             drones.cluster(d).pop(k).fires = cell2mat(nextGenPathIntCell(k));
             drones.cluster(d).pop(k).fireSum = sum(drones.cluster(d).pop(k).fires);
         end
+        [bestTour{d}, indexBest(d)] = findBestTour(drones.cluster(d), drones.popSize);
+        bestFitness1 = drones.cluster(d).pop(indexBest(d)).fireFitness;
+        if (bestFitness == bestFitness1)
+            isConverged = isConverged + 1;
+        else
+            isConverged = 0;
+        end
+        bestFitness = bestFitness1;
     end
     for k = 1: drones.popSize
         drones.cluster(d).pop(k).fireFitness = fireFitnessFunction(...

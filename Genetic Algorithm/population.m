@@ -21,7 +21,8 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
             if (isempty(nextNode) == 1)    
                 cluster(droneNo).pop(i).tour = [cluster(droneNo).pop(i).tour, nextNode];
                 cluster(droneNo).pop(i).fires = [cluster(droneNo).pop(i).fires, fireIntensity(nextNode)];
-                cluster(droneNo).pop(i).fireSum = [cluster(droneNo).pop(i).fireSum + fireIntensity(nextNode)];
+                cluster(droneNo).pop(i).fireSum = [cluster(droneNo).pop(i).fireSum + ...
+                    cluster(droneNo).pop(i).fires(length(cluster(droneNo).pop(i).fires))];
             else
                 %makes sure no more looping if nextNode is empty
                 abortCondition = 1;

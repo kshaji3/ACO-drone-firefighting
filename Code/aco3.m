@@ -7,7 +7,7 @@ function [time] = aco3(graph, environment, droneNo, antNo, indVert, indHoriz, rh
     [drones] = createDrones(environment.fires{indVert, indHoriz}, droneNo);
 
     %% Initial Parameters
-    environment.maxIter = 50; %1
+    environment.maxIter = 10; %1
     drones.tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
     graph.eta = 1 ./ graph.edges; %edge desirability
 

@@ -23,10 +23,9 @@ droneNo = 5; %agents in CVRP
 
 environment.maxIter = 10; %1
 iterations = 5;
-popSize = 5;
 for i = 1: iterations
     %cycle through for 10 - 50 ants
-    
+    popSize = 10 * i;
     droneNo = 5; %agents in CVRP
     for k = 1: length(regionNames)
         for j = 1: numTrialsPerRegion
