@@ -4,9 +4,11 @@ function [ cluster ] = population(popSize, fireIntensity,  toursFound, droneNo,.
     nodeNo = length(fireIntensity);
     for i = 1: popSize
         initial_node = randi([1, nodeNo]);
-        while (ismembertol(initial_node, toursFound) == 1 || ...
-                fireIntensity(initial_node) > droneCapac)
+        maxIter1 = 0;
+        while (maxIter1 < 10 && (ismembertol(initial_node, toursFound) == 1 || ...
+                fireIntensity(initial_node) > droneCapac))
             initial_node = randi([1, nodeNo]);
+            maxIter1 = maxIter1 + 1;
         end
         cluster(droneNo).pop(i).fireSum = fireIntensity(initial_node);
         if (isempty(cluster(droneNo).pop(i).fireSum))

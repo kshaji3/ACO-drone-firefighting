@@ -5,7 +5,7 @@ tic; %start the program timer
 
 %% Set File Names
 fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
-sheetName = 'sheet9';
+sheetName = 'sheet7';
 trialName = 'trial1';
 regionName = 'northeast';
 outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');

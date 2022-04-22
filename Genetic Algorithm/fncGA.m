@@ -1,4 +1,4 @@
-function [time] = fncGA(graph, environment, droneNum, popSize, maxIter, indVert, indHoriz)
+function [time] = fncGA(graph, environment, droneNum, popSize, maxIter, mutationProbability, indVert, indHoriz)
     timeStart = tic;
     
     [drones] = createDrones(environment.fires{indVert, indHoriz}, droneNum);
@@ -11,7 +11,7 @@ function [time] = fncGA(graph, environment, droneNum, popSize, maxIter, indVert,
     distances = calculateDistance(environment.fires{indVert, indHoriz}.loc);
     drones.popSize = popSize;
     drones.crossoverProbability = 0.9;
-    drones.mutationProbability = 0.05;
+    drones.mutationProbability = mutationProbability;
     generationNumber = maxIter;
     drones.cluster = [];
     drones.allUsedNodes = [];

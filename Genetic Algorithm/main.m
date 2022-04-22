@@ -30,7 +30,7 @@ distances = calculateDistance(environment.fires.loc);
 drones.popSize = 100;
 drones.crossoverProbability = 0.9;
 drones.mutationProbability = 0.05;
-generationNumber = 10;
+generationNumber = 50;
 drones.cluster = [];
 drones.allUsedNodes = [];
 % 

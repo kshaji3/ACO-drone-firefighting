@@ -95,7 +95,7 @@ Generate samples of the northeast dataset and store them in an excel file
 ```{r}
 excel_name <-  "northeast-samples.xlsx"
 num_tables <- 10
-num_rows <- 20
+num_rows <- 50
 generate_tables(num_tables, num_rows, wadnr_northeast, excel_name)
 head(wadnr_northeast)
 ```
