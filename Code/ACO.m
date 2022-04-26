@@ -5,7 +5,7 @@ tic; %start the program timer
 
 %% Set File Names
 fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
-sheetName = 'sheet7';
+sheetName = 'sheet1';
 trialName = 'trial1';
 regionName = 'northeast';
 outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');
@@ -25,7 +25,7 @@ drones.netDroneExtSum = sum(drones.capac);
 [graph] = createGraph(environment.fires.locX, environment.fires.locY, environment.fires.locZ);
 
 %Draw the graph
-graphFigures.fig1 = figure('Position', get(0, 'Screensize'));
+graphFigures.fig1 = figure;
 subplot(2, 4, 1)
 drawGraph(graph);
 subplot(2, 4, 2);
@@ -33,7 +33,7 @@ drawGraphWithDrones(graph, drones);
 
 %% Initial Parameters
 environment.maxIter = 10; %1
-drones.antNo = 50; %5
+drones.antNo = 10; %5
 
 drones.tau0 = 10 * 1 / (graph.n * mean(graph.edges(:) ) );
 graph.eta = 1 ./ graph.edges; %edge desirability
@@ -44,7 +44,7 @@ for t = 1: droneNo - 1
     drones.tau(:,:,t + 1) = drones.tau0 * ones(graph.n, graph.n);
 end
 
-environment.rho = 0.5; % Evaporation rate 
+environment.rho = 0.4; % Evaporation rate 
 environment.alpha = 1;  % Pheromone exponential parameters 
 environment.beta = 1;  % Desirability exponetial parameter
 
@@ -63,7 +63,8 @@ drones.colony = [];
 drones.bestOverallFitness = zeros(1, droneNo); %datapoint that shows overall how ideal the whole solution is
 drones.allUsedNodes = []; %keeps track of all the nodes that are visited
 drones.bestSolutionsFound = zeros(1, droneNo); %check if best solutions are found
-
+colors = {'blue', 'red', 'green', 'black', 'purple'};
+droneFitnesses = {};
 
 
 %% Main Loop of ACO
@@ -76,6 +77,7 @@ for d = 1: droneNo
     while t <= environment.maxIter && drones.bestSolutionsFound(d) ~= 1
         drones.colony = createColonies(t, graph, environment.fires.intensity, drones.capac(d), ...
             d, drones.colony, drones.antNo, drones.tau(:,:,d), graph.eta, environment.alpha, environment.beta, drones.allUsedNodes);
+        storeTable = [];
         for k = 1: drones.antNo 
             %calculate fitnesses of all ants in a specific drone ant colony
             drones.colony(d).ant(k).distFitness = distFitnessFunction(drones, d, drones.colony(d).ant(k).tour,  graph);
@@ -86,8 +88,13 @@ for d = 1: droneNo
             drones.colony(d).ant(k).fireTotDiff = fireFit1;
             drones.colony(d).ant(k).fireEq = fireFit2;
             drones.colony(d).ant(k).fireInt = fireFit3;
+            if (drones.colony(d).ant(k).fireFitness == 10000)
+                storeTable = [storeTable];
+            else    
+                storeTable = [storeTable;drones.colony(d).ant(k).fireFitness];
+            end
         end
-        
+        dronesFitnesses{d, t} = storeTable;
         %check if any of the ants offer a better solution than the ones
         %found already
         for k = 1: 1: drones.antNo
@@ -218,7 +225,7 @@ timeElapsed = toc;
 %% Graph the Best Tour as a separate figure
 
 %graph best tours
-graphFigures.fig2 = figure('Position', get(0, 'Screensize'));
+graphFigures.fig2 = figure
 
 %Graph best tours for all drones that were used
 for d = 1: drones.actualNumberDronesUsed
@@ -262,4 +269,14 @@ writetable(outputTable.timeElapsedTable, outputTable.fileName, 'Sheet', outputTa
 %save the figures used as png files in the project folder
 saveas(graphFigures.fig1, outputToursName,'png');
 saveas(graphFigures.fig2, outputBestToursName,'png');
-
+% 
+% figure;
+% hold on;
+% for j = 1: droneNo
+%     figure;
+%     hold on;
+%     for i = 1: 10
+%         ari = i * ones(length(dronesFitnesses{j, i}), 1);
+%         scatter(ari, dronesFitnesses{j, i}, 'jitter', 'on')
+%     end
+% end

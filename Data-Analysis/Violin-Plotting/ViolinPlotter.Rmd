@@ -1,0 +1,29 @@
+---
+title: "Violin Plotter"
+output: html_notebook
+---
+
+```{r}
+library("readxl")
+library("writexl")
+library("xlsx")
+library("tidyverse")
+library("dplyr")
+library("rlang")
+library("ggplot2")
+aco_table <- read_excel("10-fires-aco-rho-output.xlsx", sheet = 6)
+ga_table <- read_excel("10-fires-ga-mutProb-output.xlsx", sheet = 6)
+head(test_table)
+```
+
+Generate violin plot for ACO
+```{r}
+ggplot(aco_table, aes(x = Rho, y = `Time (s)`)) + geom_violin() + geom_boxplot(width = 0.1)
+
+```
+
+Genetic Algorithm
+```{r}
+ggplot(ga_table, aes(x = `Mutation Probability`, y = `Time (s)`)) + geom_violin() + geom_boxplot(width = 0.1)
+```
+

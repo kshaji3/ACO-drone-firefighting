@@ -5,7 +5,7 @@ global gNumber;
 
 %% Set file names
 fireDatasheet = '../data-manipulation/northeast-samples.xlsx';
-sheetName = 'sheet7';
+sheetName = 'sheet1';
 trialName = 'trial1';
 regionName = 'northeast';
 outputExcelName = strcat(trialName,'-', regionName, '-', 'data', '.xlsx');
@@ -27,20 +27,12 @@ bestPathSoFar = Inf;
 %% Initial Parameters
 % Calculating distances between cities according to created city locations.
 distances = calculateDistance(environment.fires.loc);
-drones.popSize = 100;
+drones.popSize = 10;
 drones.crossoverProbability = 0.9;
 drones.mutationProbability = 0.05;
 generationNumber = 50;
 drones.cluster = [];
 drones.allUsedNodes = [];
-% 
-% for d = 1: droneNum
-%     % Generate population with random paths.
-%     drones.cluster = population(drones.popSize, environment.fires.intensity, drones.allUsedNodes...
-%         , d, drones.capac(d), drones.cluster);
-%     %nextGeneration = zeros(popSize,numberOfCities);
-% end
-
 
 bestFitness = Inf;
 

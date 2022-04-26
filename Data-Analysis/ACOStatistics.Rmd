@@ -1,0 +1,22 @@
+---
+title: "ACO Statistics"
+output: html_notebook
+---
+
+```{r}
+library("readxl")
+library("writexl")
+library("xlsx")
+library("tidyverse")
+library("dplyr")
+library("rlang")
+library("ggplot2")
+test_table <- read_excel("10firesacoanttest.xlsx", sheet = 5)
+head(test_table)
+```
+
+```{r}
+ggplot(test_table, aes(x = Ants, y = value)) + geom_violin() + geom_dotplot(binaxis = 'y', stackdir = 'center', dotsize = 1)
+
+```
+
