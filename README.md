@@ -8,6 +8,6 @@
 <li>Rudimentary Greedy Optimization Capacitated Vehicle Routing (CVRP) Solver</li>
 <li>ACO CVRP Solver for fire intensities and known locations</li>
 <li>Fire datasheets from WA DNR, R data pre-processing code to clean data for ACO</li>
-<li>Adding GA CVRP Solver for fire datasets</li>
+<li>GA CVRP Solver for fire datasets</li>
 <li>Basic R Code for the analysis and display of data</li>
 </ul>
